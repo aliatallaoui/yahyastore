@@ -3,642 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ورشة يحيى للموس البوسعادي - صناعة يدوية 100% من الفولاذ المقاوم للصدأ. كل ماهو عصري تقليدي وأصلي. توصيل لجميع الولايات.">
-    <meta name="keywords" content="موس بوسعادي, سكين تقليدي, صناعة يدوية, جزائري, ورشة يحيى">
-    <title>ورشة يحيى للموس البوسعادي | كل ماهو عصري تقليدي وأصلي</title>
-    <link rel="icon" href="images/logo-gold.png" type="image/png">
-    <link rel="canonical" href="https://yahyaartisan.shop/">
-    <meta property="og:title" content="ورشة يحيى للموس البوسعادي">
-    <meta property="og:description" content="صناعة يدوية 100% من الفولاذ المقاوم للصدأ. كل ماهو عصري تقليدي وأصلي. توصيل لجميع الولايات.">
-    <meta property="og:image" content="images/hero-bg.jpg">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="preload" as="image" href="images/hero-bg.jpg">
-    <link rel="stylesheet" href="css/style.css">
+
+    <!-- SEO -->
+    <title>ورشة يحيى للموس البوسعادي — صناعة يدوية 100% | الدفع عند الاستلام</title>
+    <meta name="description" content="موس بوسعادي أصيل، صناعة يدوية 100%، مع الدفع عند الاستلام. توصيل لجميع ولايات الجزائر الـ 58.">
+    <meta name="keywords"    content="ورشة يحيى, موس بوسعادي, الدفع عند الاستلام, صناعة يدوية جزائرية, COD Algeria, موس بوسعادي أصيل">
+    <meta name="author"      content="ورشة يحيى">
+    <meta name="robots"      content="index, follow">
+    <link rel="canonical"    href="https://yahyastore.dz/">
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content="website">
+    <meta property="og:url"         content="https://yahyastore.dz/">
+    <meta property="og:title"       content="ورشة يحيى للموس البوسعادي — صناعة يدوية 100% | الدفع عند الاستلام">
+    <meta property="og:description" content="منتجات مختارة بعناية، طلب سريع، ودفع عند الاستلام. توصيل لجميع ولايات الجزائر.">
+    <meta property="og:image"       content="https://yahyastore.dz/images/og-cover.jpg">
+    <meta property="og:locale"      content="ar_DZ">
+    <meta property="og:site_name"   content="ورشة يحيى">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="ورشة يحيى — موس بوسعادي أصيل | الدفع عند الاستلام">
+    <meta name="twitter:description" content="منتجات مختارة بعناية — طلب سريع — دفع عند الاستلام — توصيل لجميع الولايات.">
+    <meta name="twitter:image"       content="https://yahyastore.dz/images/og-cover.jpg">
+
+    <!-- API config via meta -->
+    <meta name="api-url" content="/api">
+    <meta name="api-key" content="f99c4435c23a220b7789680ff0a65a723059ab082920c6e66e8ef49335b4deee">
+
+    <!-- Favicon -->
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="images/logo.png"    type="image/png">
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+    <!-- Announcement Bar -->
+    <div class="announcement-bar" id="announcementBar">
+        <div class="container">
+            <div class="ann-icons">
+                <i class="fas fa-truck"></i>
+                <i class="fas fa-shield-alt"></i>
+                <i class="fab fa-whatsapp"></i>
+                <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <p id="announcementText">🚚 الدفع عند الاستلام متوفر — توصيل إلى جميع ولايات الجزائر | اطلب الآن</p>
+            <button class="announcement-close" id="closeAnnouncement" aria-label="إغلاق الإشعار">×</button>
+        </div>
+    </div>
 
     <!-- Header / Navbar -->
     <header class="header" id="header">
         <nav class="navbar container">
-            <a href="#" class="logo">
-                <img src="images/logo-gold.png" alt="ورشة يحيى للموس البوسعادي" class="logo-img">
+            <a href="#home" class="logo" aria-label="ورشة يحيى — الصفحة الرئيسية">
+                <img src="images/logo-white.png" alt="ورشة يحيى" class="logo-img"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                <div style="display:none; align-items:center; gap:10px;">
+                    <div class="logo-icon" aria-hidden="true"><i class="fas fa-store"></i></div>
+                    <div>
+                        <div class="logo-text">ورشة <span>يحيى</span></div>
+                        <div class="logo-tagline">الدفع عند الاستلام</div>
+                    </div>
+                </div>
             </a>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home" class="active">الصفحة الرئيسية</a></li>
-                <li><a href="products.html">المنتجات</a></li>
-                <li><a href="#story">قصة الموس</a></li>
-                <li><a href="#gallery">المعرض</a></li>
-                <li><a href="#customize">التخصيص</a></li>
-                <li><a href="#contact">اتصل بنا</a></li>
+
+            <ul class="nav-links" id="navLinks" role="navigation" aria-label="القائمة الرئيسية">
+                <li><a href="#home"         class="active">الرئيسية</a></li>
+                <li><a href="#products">المنتجات</a></li>
+                <li><a href="#how-it-works">طريقة الطلب</a></li>
+                <li><a href="#shipping">الشحن</a></li>
+                <li><a href="#faq">الأسئلة الشائعة</a></li>
+                <li><a href="#contact">تواصل معنا</a></li>
             </ul>
+
             <div class="nav-actions">
+                <button class="icon-btn search-btn" aria-label="بحث">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="#" class="nav-whatsapp-btn" id="navWaBtn" target="_blank" rel="noopener" aria-label="واتساب">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>واتساب</span>
+                </a>
                 <button class="icon-btn cart-btn" id="cartBtn" aria-label="سلة التسوق">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="cart-count" id="cartCount" aria-live="polite">0</span>
                 </button>
-                <button class="icon-btn search-btn" aria-label="بحث">
-                    <i class="fas fa-search"></i>
-                </button>
-                <button class="hamburger" id="hamburger" aria-label="القائمة">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <button class="hamburger" id="hamburger" aria-label="القائمة" aria-expanded="false">
+                    <span></span><span></span><span></span>
                 </button>
             </div>
         </nav>
     </header>
 
-    <main id="main-content">
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-particles" id="heroParticles"></div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content container">
-            <p class="hero-subtitle animate-text">ورشة يحيى للموس البوسعادي</p>
-            <h1 class="hero-title animate-text">كل ماهو عصري تقليدي وأصلي:<br>الموس البوسعادي</h1>
-            <a href="#collections" class="btn btn-primary btn-ripple animate-text">تسوق الآن</a>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="images/feature-handle.jpg" alt="مقبض سلكي فريد" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-hand-fist\'></i>'">
-                    </div>
-                    <h3>مقبض سلكي فريد</h3>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="images/feature-engrave.jpg" alt="نقوش عريقة" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-pen-nib\'></i>'">
-                    </div>
-                    <h3>نقوش عريقة</h3>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="images/feature-handcraft.jpg" alt="صياغة يدوية" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-hands\'></i>'">
-                    </div>
-                    <h3>صياغة يدوية</h3>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Products Section -->
-    <section class="products" id="collections">
-        <div class="container">
-            <h2 class="section-title">منتجاتنا المميزة</h2>
-
-            <!-- Category Filter Tabs -->
-            <div class="filter-tabs" id="filterTabs" role="group" aria-label="تصفية المنتجات">
-                <button class="filter-tab active" data-filter="all" aria-pressed="true">الكل</button>
-                <button class="filter-tab" data-filter="bundle" aria-pressed="false">باقات</button>
-                <button class="filter-tab" data-filter="single" aria-pressed="false">قطع فردية</button>
-                <button class="filter-tab" data-filter="accessory" aria-pressed="false">إكسسوارات</button>
-            </div>
-
-            <div class="products-grid" id="productsGrid">
-
-                <!-- Product 1: الباقة الكاملة -->
-                <div class="product-card" data-category="bundle">
-                    <a href="product-1.html" class="product-card-link"><div class="product-image">
-                        <span class="product-badge">-20%</span>
-                        <img src="images/product-1.jpg" alt="الباقة الكاملة المتكاملة" loading="lazy">
-                        <div class="product-frame"></div>
-                    </div></a>
-                    <div class="product-info">
-                        <h3 class="product-title"><a href="product-1.html">الباقة الكاملة المتكاملة</a></h3>
-                        <p class="product-desc">باقة متكاملة تشمل: موس للذبح، موس للسلخ، فصال، ومبرد. مصنوعة من الفولاذ المقاوم للصدأ، صناعة يدوية 100% مع إمكانية نقش الاسم.</p>
-                        <div class="product-footer">
-                            <div class="price-wrapper">
-                                <span class="product-price">39,000 DZD</span>
-                                <span class="product-price-old">49,000 DZD</span>
-                            </div>
-                            <button class="btn btn-primary btn-ripple add-to-cart" data-id="1" data-name="الباقة الكاملة المتكاملة" data-price="39000">أضف للسلة</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 2: الموس البوسعادي قطعتين ذبيحة وسليخة -->
-                <div class="product-card" data-category="bundle">
-                    <a href="product-2.html" class="product-card-link"><div class="product-image">
-                        <span class="product-badge">-38%</span>
-                        <img src="images/product-2.jpg" alt="الموس البوسعادي قطعتين" loading="lazy">
-                        <div class="product-frame"></div>
-                    </div></a>
-                    <div class="product-info">
-                        <h3 class="product-title"><a href="product-2.html">الموس البوسعادي (قطعتين ذبيحة وسليخة)</a></h3>
-                        <p class="product-desc">مصنوع يدويا 100%، يشمل موس ذبيحة وموس سليخة. يدوم ليك ولأحفادك وأحفاد أحفادك. توصيل مجاني مع إمكانية إضافة مبرد وعلبة.</p>
-                        <div class="product-footer">
-                            <div class="price-wrapper">
-                                <span class="product-price">15,000 DZD</span>
-                                <span class="product-price-old">24,000 DZD</span>
-                            </div>
-                            <button class="btn btn-primary btn-ripple add-to-cart" data-id="2" data-name="الموس البوسعادي (قطعتين ذبيحة وسليخة)" data-price="15000">أضف للسلة</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 3: باك الموس البوسعادي -->
-                <div class="product-card" data-category="bundle">
-                    <a href="product-3.html" class="product-card-link"><div class="product-image">
-                        <span class="product-badge">-20%</span>
-                        <img src="images/product-3.jpg" alt="باك الموس البوسعادي" loading="lazy">
-                        <div class="product-frame"></div>
-                    </div></a>
-                    <div class="product-info">
-                        <h3 class="product-title"><a href="product-3.html">باك الموس البوسعادي (قطعتين)</a></h3>
-                        <p class="product-desc">طقم من قطعتين ذبيحة وسليخة من الفولاذ المقاوم للصدأ. صناعة يدوية بنقوش تقليدية أصيلة مع إمكانية نقش الاسم أو التوقيع.</p>
-                        <div class="product-footer">
-                            <div class="price-wrapper">
-                                <span class="product-price">28,000 DZD</span>
-                                <span class="product-price-old">35,000 DZD</span>
-                            </div>
-                            <button class="btn btn-primary btn-ripple add-to-cart" data-id="3" data-name="باك الموس البوسعادي (قطعتين)" data-price="28000">أضف للسلة</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 4: الموس البوسعادي الأصيل (زوج) -->
-                <div class="product-card" data-category="single">
-                    <a href="product-4.html" class="product-card-link"><div class="product-image">
-                        <span class="product-badge">-25%</span>
-                        <img src="images/product-4.jpg" alt="الموس البوسعادي الأصيل" loading="lazy">
-                        <div class="product-frame"></div>
-                    </div></a>
-                    <div class="product-info">
-                        <h3 class="product-title"><a href="product-4.html">الموس البوسعادي الأصيل (زوج)</a></h3>
-                        <p class="product-desc">زوج من الموس البوسعادي الأصيل، صناعة يدوية تقليدية بعناية فائقة في النقوش والتوازن والمقبض والغمد.</p>
-                        <div class="product-footer">
-                            <div class="price-wrapper">
-                                <span class="product-price">18,000 DZD</span>
-                                <span class="product-price-old">24,000 DZD</span>
-                            </div>
-                            <button class="btn btn-primary btn-ripple add-to-cart" data-id="4" data-name="الموس البوسعادي الأصيل (زوج)" data-price="18000">أضف للسلة</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 5: الموس البوسعادي الأصيل من الشريمة -->
-                <div class="product-card" data-category="single">
-                    <a href="product-5.html" class="product-card-link"><div class="product-image">
-                        <span class="product-badge">-23%</span>
-                        <img src="images/product-5.jpg" alt="الموس البوسعادي من الشريمة" loading="lazy">
-                        <div class="product-frame"></div>
-                    </div></a>
-                    <div class="product-info">
-                        <h3 class="product-title"><a href="product-5.html">الموس البوسعادي الأصيل من الشريمة</a></h3>
-                        <p class="product-desc">موس بوسعادي أصيل من الشريمة، مصنوع من الفولاذ المقاوم للصدأ بتقنيات حرفية تقليدية توارثت عبر الأجيال.</p>
-                        <div class="product-footer">
-                            <div class="price-wrapper">
-                                <span class="product-price">17,000 DZD</span>
-                                <span class="product-price-old">22,000 DZD</span>
-                            </div>
-                            <button class="btn btn-primary btn-ripple add-to-cart" data-id="5" data-name="الموس البوسعادي الأصيل من الشريمة" data-price="17000">أضف للسلة</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 6: باك العائلة البوسعادي -->
-                <div class="product-card" data-category="bundle">
-                    <a href="product-6.html" class="product-card-link"><div class="product-image">
-                        <span class="product-badge">-30%</span>
-                        <img src="images/product-6.jpg" alt="باك العائلة البوسعادي" loading="lazy">
-                        <div class="product-frame"></div>
-                    </div></a>
-                    <div class="product-info">
-                        <h3 class="product-title"><a href="product-6.html">باك العائلة البوسعادي</a></h3>
-                        <p class="product-desc">باقة العائلة تشمل مجموعة متنوعة من الأدوات البوسعادية الأصيلة، مثالية للاستخدام العائلي اليومي.</p>
-                        <div class="product-footer">
-                            <div class="price-wrapper">
-                                <span class="product-price">13,900 DZD</span>
-                                <span class="product-price-old">19,900 DZD</span>
-                            </div>
-                            <button class="btn btn-primary btn-ripple add-to-cart" data-id="6" data-name="باك العائلة البوسعادي" data-price="13900">أضف للسلة</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 7: القصعة المصنوعة يدويا -->
-                <div class="product-card" data-category="accessory">
-                    <a href="product-7.html" class="product-card-link"><div class="product-image">
-                        <span class="product-badge">-26%</span>
-                        <img src="images/product-7.jpg" alt="القصعة المصنوعة يدويا" loading="lazy">
-                        <div class="product-frame"></div>
-                    </div></a>
-                    <div class="product-info">
-                        <h3 class="product-title"><a href="product-7.html">القصعة المصنوعة يدويا - خشب البيقنون 40سم</a></h3>
-                        <p class="product-desc">قصعة خشبية مصنوعة يدويا من خشب البيقنون بقطر 40 سنتمتر، تحفة فنية تقليدية للمائدة الجزائرية.</p>
-                        <div class="product-footer">
-                            <div class="price-wrapper">
-                                <span class="product-price">5,900 DZD</span>
-                                <span class="product-price-old">6,900 DZD</span>
-                            </div>
-                            <button class="btn btn-primary btn-ripple add-to-cart" data-id="7" data-name="القصعة المصنوعة يدويا - خشب البيقنون 40سم" data-price="5900">أضف للسلة</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 8: مبرد ذكير (مضاية) -->
-                <div class="product-card" data-category="accessory">
-                    <a href="product-8.html" class="product-card-link"><div class="product-image">
-                        <span class="product-badge">-38%</span>
-                        <img src="images/product-8.jpg" alt="مبرد ذكير" loading="lazy">
-                        <div class="product-frame"></div>
-                    </div></a>
-                    <div class="product-info">
-                        <h3 class="product-title"><a href="product-8.html">مبرد ذكير (مضاية)</a></h3>
-                        <p class="product-desc">مبرد تقليدي لشحذ السكاكين والموس البوسعادي، أداة أساسية للحفاظ على حدة النصل.</p>
-                        <div class="product-footer">
-                            <div class="price-wrapper">
-                                <span class="product-price">4,900 DZD</span>
-                                <span class="product-price-old">7,900 DZD</span>
-                            </div>
-                            <button class="btn btn-primary btn-ripple add-to-cart" data-id="8" data-name="مبرد ذكير (مضاية)" data-price="4900">أضف للسلة</button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Counter Section -->
-    <section class="stats" id="stats">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-icon"><i class="fas fa-fire"></i></div>
-                    <span class="stat-number" data-target="15">0</span>
-                    <span class="stat-label">سنة من الإتقان</span>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-icon"><i class="fas fa-box-open"></i></div>
-                    <span class="stat-number" data-target="2500">0</span>
-                    <span class="stat-suffix">+</span>
-                    <span class="stat-label">قطعة مباعة</span>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-icon"><i class="fas fa-smile"></i></div>
-                    <span class="stat-number" data-target="1800">0</span>
-                    <span class="stat-suffix">+</span>
-                    <span class="stat-label">عميل سعيد</span>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-icon"><i class="fas fa-truck"></i></div>
-                    <span class="stat-number" data-target="58">0</span>
-                    <span class="stat-label">ولاية يصلها التوصيل</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <div class="testimonial-slider">
-                <div class="testimonial-card" id="testimonialCard">
-                    <div class="quote-icon"><i class="fas fa-quote-right"></i></div>
-                    <p class="testimonial-text" id="testimonialText"></p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="images/avatar-1.jpg" alt="عميل" id="testimonialAvatar" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23c8a656%22/%3E%3Ctext fill=%22%23fff%22 font-size=%2240%22 x=%2250%22 y=%2265%22 text-anchor=%22middle%22%3E%D8%B9%3C/text%3E%3C/svg%3E'">
-                        </div>
-                        <span class="author-name" id="testimonialName"></span>
-                    </div>
-                </div>
-                <div class="testimonial-dots">
-                    <span class="dot active" data-index="0"></span>
-                    <span class="dot" data-index="1"></span>
-                    <span class="dot" data-index="2"></span>
-                    <span class="dot" data-index="3"></span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Story Section -->
-    <section class="story" id="story">
-        <div class="container">
-            <div class="story-grid">
-                <div class="story-image parallax-img">
-                    <img src="images/story.jpg" alt="قصة الموس البوسعادي" onerror="this.parentElement.classList.add('placeholder')">
-                </div>
-                <div class="story-content">
-                    <h2 class="section-title">ورشة يحيى للموس البوسعادي</h2>
-                    <p>ورشة يحيى هي ورشة حرفية متخصصة في صناعة الموس البوسعادي الأصيل. نحافظ على تراث الصناعة التقليدية الجزائرية التي توارثها الحرفيون أبا عن جد عبر قرون.</p>
-                    <p>كل قطعة مصنوعة يدويا 100% من الفولاذ المقاوم للصدأ، مع عناية فائقة بالنقوش والتوازن والمقبض والغمد. موس يدوم ليك ولأحفادك وأحفاد أحفادك.</p>
-                    <p>نوفر إمكانية التخصيص بنقش الاسم أو التوقيع على كل قطعة.</p>
-                    <a href="#customize" class="btn btn-outline btn-ripple">اطلب تخصيصك</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Gallery Section -->
-    <section class="gallery" id="gallery">
-        <div class="container">
-            <h2 class="section-title" style="text-align:center; margin-bottom:40px;">معرض الصور</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item gallery-item-wide" onclick="openLightbox(this)">
-                    <img src="images/gallery-1.jpg" alt="الباقة الكاملة في علبة فاخرة" loading="lazy">
-                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                </div>
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="images/gallery-2.jpg" alt="قطعتين ذبيحة وسليخة" loading="lazy">
-                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                </div>
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="images/gallery-3.jpg" alt="الأغماد الجلدية المنقوشة" loading="lazy">
-                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                </div>
-                <div class="gallery-item gallery-item-tall" onclick="openLightbox(this)">
-                    <img src="images/gallery-4.jpg" alt="سيف بوسعادي في علبة عرض" loading="lazy">
-                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                </div>
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="images/gallery-5.jpg" alt="تفاصيل المقبض السلكي" loading="lazy">
-                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                </div>
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="images/gallery-6.jpg" alt="النقوش على النصل" loading="lazy">
-                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                </div>
-                <div class="gallery-item gallery-item-wide" onclick="openLightbox(this)">
-                    <img src="images/gallery-7.jpg" alt="طقم كامل في علبة خشبية" loading="lazy">
-                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                </div>
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="images/gallery-8.jpg" alt="ورشة يحيى من الداخل" loading="lazy">
-                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                </div>
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="images/gallery-9.jpg" alt="موس بوسعادي مع غمد جلدي" loading="lazy">
-                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                </div>
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="images/gallery-10.jpg" alt="علبة خشبية مع بطاقة شكر" loading="lazy">
-                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                </div>
-                <div class="gallery-item gallery-item-wide" onclick="openLightbox(this)">
-                    <img src="images/gallery-11.jpg" alt="موس بوسعادي في الطبيعة" loading="lazy">
-                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                </div>
-                <div class="gallery-item" onclick="openLightbox(this)">
-                    <img src="images/gallery-12.jpg" alt="أغماد جلدية مزخرفة" loading="lazy">
-                    <div class="gallery-overlay"><i class="fas fa-search-plus"></i></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox" role="dialog" aria-label="معرض الصور">
-        <button class="lightbox-close" onclick="closeLightbox()" aria-label="إغلاق المعرض"><i class="fas fa-times"></i></button>
-        <button class="lightbox-prev" onclick="navigateLightbox(-1)" aria-label="الصورة السابقة"><i class="fas fa-chevron-right"></i></button>
-        <button class="lightbox-next" onclick="navigateLightbox(1)" aria-label="الصورة التالية"><i class="fas fa-chevron-left"></i></button>
-        <img src="" alt="" id="lightboxImg">
-    </div>
-
-    <!-- Customization Section -->
-    <section class="customize-section" id="customize">
-        <div class="container">
-            <div class="customize-content">
-                <h2 class="section-title">خصص الموس الخاص بك</h2>
-                <p>اختر نوع النصل، المقبض، والنقوش التي تريدها. نقدم خدمة نقش الاسم أو التوقيع الشخصي على كل قطعة. تواصل معنا عبر الواتساب أو النموذج أدناه.</p>
-                <a href="#contact" class="btn btn-primary btn-ripple">اطلب تخصيصك الآن</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <h2 class="section-title">اتصل بنا</h2>
-            <form class="contact-form" id="contactForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="contactName">الاسم الكامل</label>
-                        <input type="text" id="contactName" name="name" placeholder="الاسم الكامل" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contactPhone">رقم الهاتف</label>
-                        <input type="tel" id="contactPhone" name="phone" placeholder="رقم الهاتف">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="contactSubject">الموضوع</label>
-                    <input type="text" id="contactSubject" name="subject" placeholder="الموضوع">
-                </div>
-                <div class="form-group">
-                    <label for="contactMessage">رسالتك</label>
-                    <textarea id="contactMessage" name="message" placeholder="رسالتك" rows="5" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary btn-ripple">إرسال</button>
-            </form>
-        </div>
-    </section>
-
-    </main>
+    <!-- SPA Content -->
+    <main id="main-content" role="main"></main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>اشترك في نشرتنا الإخبارية</h4>
-                    <p>كن أول من يعلم بالعروض الحصرية والمنتجات الجديدة</p>
-                    <form class="newsletter-form" id="newsletterForm">
-                        <input type="email" placeholder="بريدك الإلكتروني" required>
-                        <button type="submit" class="btn btn-primary">اشترك</button>
-                    </form>
+
+                <!-- Brand column -->
+                <div class="footer-col footer-brand">
+                    <div class="footer-logo">
+                        <img src="images/logo-white.png" alt="ورشة يحيى" style="height:44px;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <div class="footer-logo-text" style="display:none;">
+                            <span>ورشة يحيى</span>
+                        </div>
+                    </div>
+                    <p id="footerDesc">موس بوسعادي أصيل، صناعة يدوية 100%، مع الدفع عند الاستلام. متجر جزائري موثوق.</p>
+                    <div class="footer-cod-badge">
+                        <i class="fas fa-money-bill-wave"></i>
+                        الدفع عند الاستلام فقط
+                    </div>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"  id="footerFb"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram" id="footerIg"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="TikTok"    id="footerTk"><i class="fab fa-tiktok"></i></a>
+                    </div>
                 </div>
+
+                <!-- Links column -->
                 <div class="footer-col">
                     <h4>الصفحات</h4>
                     <ul>
-                        <li><a href="products.html">جميع المنتجات</a></li>
-                        <li><a href="#story">قصة الورشة</a></li>
-                        <li><a href="#gallery">معرض الصور</a></li>
-                        <li><a href="#customize">التخصيص</a></li>
-                        <li><a href="#contact">اتصل بنا</a></li>
+                        <li><a href="#home">الرئيسية</a></li>
+                        <li><a href="#products">المنتجات</a></li>
+                        <li><a href="#shipping">الشحن والتوصيل</a></li>
+                        <li><a href="#faq">الأسئلة الشائعة</a></li>
+                        <li><a href="#privacy">سياسة الخصوصية</a></li>
                     </ul>
                 </div>
+
+                <!-- Support column -->
                 <div class="footer-col">
-                    <h4>المعلومات</h4>
-                    <ul>
-                        <li><a href="privacy.html">سياسة الاستبدال والاسترجاع</a></li>
-                        <li><a href="shipping.html">الشحن والتسليم</a></li>
-                        <li><a href="#contact">طرق الدفع</a></li>
-                        <li><a href="faq.html">الأسئلة الشائعة</a></li>
+                    <h4>الدعم والتواصل</h4>
+                    <ul class="footer-contact-list">
+                        <li>
+                            <i class="fab fa-whatsapp"></i>
+                            <a href="#" id="footerWa" target="_blank">تواصل عبر واتساب</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="#" id="footerPhone">اتصل بنا</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>ساعات العمل: 8ص – 8م</span>
+                        </li>
                     </ul>
                 </div>
+
+                <!-- Trust column -->
                 <div class="footer-col">
-                    <h4>تواصل معنا</h4>
-                    <p class="footer-phone"><i class="fas fa-phone"></i> 0775108618</p>
-                    <p class="footer-whatsapp"><i class="fab fa-whatsapp"></i> +213775108618</p>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                    </div>
+                    <h4 id="footerWhyUs">لماذا ورشة يحيى؟</h4>
+                    <ul class="footer-trust-list">
+                        <li><i class="fas fa-check-circle"></i> الدفع عند الاستلام</li>
+                        <li><i class="fas fa-check-circle"></i> تأكيد الطلب قبل الإرسال</li>
+                        <li><i class="fas fa-check-circle"></i> توصيل لجميع الولايات</li>
+                        <li><i class="fas fa-check-circle"></i> دعم سريع عبر واتساب</li>
+                        <li><i class="fas fa-check-circle"></i> صناعة يدوية 100%</li>
+                    </ul>
                 </div>
+
             </div>
+
             <div class="footer-bottom">
-                <p>&copy; 2025 | ورشة يحيى للموس البوسعادي | yahyaartisan.shop</p>
+                <p id="footerCopy">&copy; 2026 ورشة يحيى — جميع الحقوق محفوظة</p>
+                <p class="footer-bottom-tagline">اطلب بسهولة… وادفع عند الاستلام.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Cart Sidebar -->
-    <div class="cart-overlay" id="cartOverlay"></div>
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h3>سلة التسوق</h3>
-            <button class="close-cart" id="closeCart"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="cart-items" id="cartItems">
-            <p class="empty-cart">سلة التسوق فارغة</p>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span>المجموع:</span>
-                <span id="cartTotal">0 DZD</span>
-            </div>
-            <button class="btn btn-primary btn-block btn-ripple" id="checkoutBtn">إتمام الشراء <i class="fas fa-arrow-left"></i></button>
-        </div>
-    </div>
-
-    <!-- Search Modal -->
-    <div class="search-modal" id="searchModal">
-        <div class="search-modal-content">
-            <button class="close-search" id="closeSearch"><i class="fas fa-times"></i></button>
-            <input type="text" placeholder="ابحث عن منتج..." class="search-input" id="searchInput">
-            <div class="search-results" id="searchResults"></div>
-        </div>
-    </div>
-
-    <!-- Checkout Modal -->
-    <div class="checkout-modal-overlay" id="checkoutOverlay"></div>
-    <div class="checkout-modal" id="checkoutModal">
-        <div class="checkout-header">
-            <h2><i class="fas fa-shopping-bag"></i> إتمام الطلب</h2>
-            <button class="checkout-close" id="checkoutClose"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="checkout-content">
-            <!-- Form Screen -->
-            <div id="checkoutFormScreen">
-                <div class="checkout-summary">
-                    <h3>ملخص الطلب</h3>
-                    <div class="order-items" id="checkoutOrderItems"></div>
-                    <div class="summary-row">
-                        <span>المجموع الفرعي:</span>
-                        <span id="checkoutSubtotal">0 DZD</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>الشحن:</span>
-                        <span id="checkoutShipping">0 DZD</span>
-                    </div>
-                    <div class="summary-row total">
-                        <span>الإجمالي:</span>
-                        <span id="checkoutGrandTotal">0 DZD</span>
-                    </div>
-                </div>
-                <form id="checkoutForm" class="checkout-form">
-                    <div class="form-group">
-                        <label>الاسم الكامل *</label>
-                        <input type="text" id="checkoutName" placeholder="أدخل اسمك الكامل">
-                        <span class="error-message" id="nameError"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>رقم الهاتف *</label>
-                        <input type="tel" id="checkoutPhone" placeholder="05/06/07XXXXXXXX">
-                        <span class="error-message" id="phoneError"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>الولاية *</label>
-                        <select id="checkoutWilaya">
-                            <option value="">اختر الولاية</option>
-                        </select>
-                        <span class="error-message" id="wilayaError"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>العنوان الكامل *</label>
-                        <textarea id="checkoutAddress" placeholder="أدخل عنوان التوصيل بالتفصيل" rows="2"></textarea>
-                        <span class="error-message" id="addressError"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>ملاحظات إضافية</label>
-                        <textarea id="checkoutNotes" placeholder="أي ملاحظات خاصة بالطلب (نقش اسم، تغليف هدية...)" rows="2"></textarea>
-                    </div>
-                    <div class="checkout-payment-info">
-                        <i class="fas fa-money-bill-wave"></i>
-                        <span>الدفع عند الاستلام (COD)</span>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block btn-ripple">
-                        <i class="fas fa-check"></i> تأكيد الطلب
-                    </button>
-                </form>
-            </div>
-
-            <!-- Confirmation Screen -->
-            <div id="checkoutConfirmationScreen" class="checkout-confirmation-screen" style="display:none;">
-                <div class="confirmation-content">
-                    <div class="confirmation-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h2>تم تأكيد طلبك بنجاح!</h2>
-                    <div class="confirmation-order-number">
-                        <span>رقم الطلب:</span>
-                        <strong id="confirmationOrderNumber"></strong>
-                    </div>
-                    <div class="confirmation-summary">
-                        <h3>تفاصيل الطلب</h3>
-                        <div class="order-items" id="confirmationOrderItems"></div>
-                        <div class="summary-row">
-                            <span>المجموع الفرعي:</span>
-                            <span id="confirmationSubtotal">0 DZD</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>الشحن:</span>
-                            <span id="confirmationShipping">0 DZD</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>الإجمالي:</span>
-                            <span id="confirmationGrandTotal">0 DZD</span>
-                        </div>
-                    </div>
-                    <div class="confirmation-info">
-                        <p><i class="fas fa-info-circle"></i> سيتم التواصل معك قريبا لتأكيد الطلب. يمكنك أيضا التواصل معنا عبر واتساب.</p>
-                    </div>
-                    <a href="#" id="whatsappConfirmBtn" target="_blank" class="btn btn-primary btn-block" style="background:#25d366;border-color:#25d366;display:flex;align-items:center;justify-content:center;gap:8px;">
-                        <i class="fab fa-whatsapp"></i> أرسل الطلب عبر واتساب
-                    </a>
-                    <button type="button" class="btn btn-outline btn-block" id="backToShopBtn" style="margin-top:10px;">
-                        <i class="fas fa-arrow-right"></i> العودة للتسوق
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/213775108618?text=مرحبا%20ورشة%20يحيى" target="_blank" class="whatsapp-float" aria-label="اتصل بنا عبر واتساب">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <!-- Back to Top -->
-    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
+    <!-- Scripts (order matters) -->
+    <script src="js/brand-config.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/whatsapp.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/pages.js"></script>
+    <script src="js/router.js"></script>
     <script src="js/main.js"></script>
+
+    <!-- Inline footer dynamic links -->
+    <script>
+    (function() {
+        const B     = window.BRAND || {};
+        const wa    = B.whatsapp  || '213775108618';
+        const phone = B.phone     || '0775108618';
+        const name  = B.storeName || 'ورشة يحيى';
+        const waUrl = 'https://wa.me/' + wa + '?text=' + encodeURIComponent('مرحباً ' + name + '، كيف يمكنني الطلب؟');
+        const el    = id => document.getElementById(id);
+
+        if (el('footerWa'))    el('footerWa').href   = waUrl;
+        if (el('footerPhone')) el('footerPhone').href = 'tel:' + phone;
+        if (el('navWaBtn'))    el('navWaBtn').href    = waUrl;
+
+        const s = B.social || {};
+        if (s.facebook  && el('footerFb')) el('footerFb').href = s.facebook;
+        if (s.instagram && el('footerIg')) el('footerIg').href = s.instagram;
+        if (s.tiktok    && el('footerTk')) el('footerTk').href = s.tiktok;
+
+        if (el('announcementText') && B.announcement) el('announcementText').textContent = B.announcement;
+        if (el('footerDesc')  && B.tagline)   el('footerDesc').textContent  = B.tagline;
+        if (el('footerWhyUs') && name)        el('footerWhyUs').textContent = 'لماذا ' + name + '؟';
+        if (el('footerCopy'))                 el('footerCopy').innerHTML    = '&copy; ' + new Date().getFullYear() + ' ' + name + ' — جميع الحقوق محفوظة';
+    })();
+    </script>
 </body>
 </html>
