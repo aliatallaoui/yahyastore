@@ -34,6 +34,7 @@ window.Router = (() => {
         }
 
         if (window.FBQ) FBQ('PageView');
+        if (window.Analytics) Analytics.track('pageview', { page: '#' + page });
 
         if (scrollToId) {
             setTimeout(() => {
@@ -70,6 +71,11 @@ window.Router = (() => {
                 content_type: 'product',
                 value: product.price,
                 currency: 'DZD',
+            });
+            if (window.Analytics) Analytics.track('product_view', {
+                page:         '#product/' + id,
+                product_id:   String(product.id),
+                product_name: product.name,
             });
         }
         window.scrollTo(0, 0);

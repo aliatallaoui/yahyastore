@@ -20,6 +20,10 @@ class CartManager {
             value: price * qty,
             currency: 'USD',
         });
+        if (window.Analytics) Analytics.track('add_to_cart', {
+            product_id:   String(id),
+            product_name: name,
+        });
     }
 
     updateQty(index, delta) {

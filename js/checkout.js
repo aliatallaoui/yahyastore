@@ -64,6 +64,7 @@ window.Checkout = (() => {
             currency: 'USD',
             num_items: _cart.count,
         });
+        if (window.Analytics) Analytics.track('checkout_start');
     }
 
     function close() {
