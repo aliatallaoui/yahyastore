@@ -105,13 +105,11 @@ window.BRAND = {
         { icon: 'fas fa-shield-alt',      title: 'ضمان الجودة',            desc: 'جودة مضمونة أو استرجاع خلال 7 أيام من الاستلام' },
     ],
 
-    /* Customer testimonials */
-    testimonials: [
-        { text: 'طلبت المنتج ووصلني بالضبط كما في الصورة — جودة ممتازة وتغليف محترم. شكراً ورشة يحيى!', name: 'محمد ع.', wilaya: 'المسيلة', rating: 5 },
-        { text: 'أعجبني أنهم اتصلوا بي قبل إرسال الطلب للتأكيد. يعطيكم الصحة على الاحترافية.', name: 'سمية ب.', wilaya: 'الجزائر العاصمة', rating: 5 },
-        { text: 'التعامل كان سريع والطلبية وصلتني مليحة. الدفع عند الاستلام خلاني نطلب بثقة ومن غير تردد.', name: 'عبد القادر ل.', wilaya: 'وهران', rating: 5 },
-        { text: 'أول مرة أطلب أونلاين وما خسرتش. الطلب وصل في 48 ساعة والتغليف كان محترم جداً.', name: 'فاطمة م.', wilaya: 'قسنطينة', rating: 5 },
-        { text: 'سعر مناسب وجودة ممتازة. سأطلب مرة أخرى بكل تأكيد — سأعود للطلب من ورشة يحيى.', name: 'رضا خ.', wilaya: 'تيزي وزو', rating: 5 },
+    /* Customer review videos — drop .mp4 files in /videos/ then add entries here */
+    reviewVideos: [
+        // { src: 'videos/review-1.mp4', poster: 'videos/review-1-thumb.jpg', caption: 'محمد — المسيلة' },
+        // { src: 'videos/review-2.mp4', caption: 'سمية — الجزائر العاصمة' },
+        // { src: 'videos/review-3.mp4', caption: 'عبد القادر — وهران' },
     ],
 
     /* Home page categories */
