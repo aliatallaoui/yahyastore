@@ -26,13 +26,17 @@ window.BRAND = {
         { icon: 'fab fa-whatsapp',        label: 'دعم واتساب',           desc: 'متاح طوال اليوم' },
     ],
 
-    /* Social links — fill when available */
+    /* Facebook Pixel — paste your Pixel ID here */
+    facebookPixelId: '761582631747134',
+
+    /* Social links */
     social: {
-        facebook:   '',
-        instagram:  '',
-        tiktok:     '',
+        facebook:   'https://www.facebook.com/yahya.knife.bousaada',
+        instagram:  'https://www.instagram.com/yahya.knife',
+        tiktok:     'https://www.tiktok.com/@yahya.knife2',
         youtube:    '',
-        googlemaps: '',
+        googlemaps: 'https://maps.app.goo.gl/ELJRVAZxDuxWPjF5A',
+        viber:      'viber://chat?number=213775108618',
     },
 
     /* Design tokens (mirrors CSS variables — used in dynamic JS rendering) */

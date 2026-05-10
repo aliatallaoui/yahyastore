@@ -125,6 +125,31 @@ ${trustBarHTML()}
     </div>
 </section>
 
+<!-- ══ GALLERY — hidden until high-quality images are ready ══ -->
+<section class="gallery section" id="gallery" style="display:none;">
+    <div class="container">
+        <div class="section-header text-center" style="margin-bottom:32px;">
+            <h2 class="section-title">معرض الصور</h2>
+            <p class="section-subtitle">لمسات فنية في كل تفصيل — تصفح أحدث منتجاتنا</p>
+        </div>
+
+        <div class="gallery-slider" id="gallerySlider">
+            <div class="gallery-track" id="galleryTrack">
+                ${[1,2,3,4,5,6,7,8,9,10,11,12].map(i => `
+                <div class="gallery-slide fade-in">
+                    <img src="images/gallery-${i}.jpg" alt="صورة المعرض ${i}" loading="lazy">
+                </div>
+                `).join('')}
+            </div>
+
+            <button class="gallery-nav prev" id="galleryPrev" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
+            <button class="gallery-nav next" id="galleryNext" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
+
+            <div class="gallery-dots" id="galleryDots"></div>
+        </div>
+    </div>
+</section>
+
 <!-- ══ HOW IT WORKS ══════════════════════════════════════════ -->
 <section class="how-it-works section" id="how-it-works">
     <div class="container">
@@ -177,15 +202,17 @@ ${trustBarHTML()}
         </div>
         ${reviewVideos.length ? `
         <div style="display:flex;flex-direction:column;align-items:center;gap:24px;">
-            <div class="review-video-card fade-in" style="max-width:320px;width:100%;">
-                <div class="review-video-wrap" data-src="${esc(reviewVideos[0].src)}" onclick="RVP.play(this)">
-                    <div class="review-video-thumb">
-                        <div class="vpo-btn"><i class="fas fa-play"></i></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;max-width:900px;">
+                ${reviewVideos.slice(0, 3).map(v => `
+                <div class="review-video-card">
+                    <div class="review-video-wrap" data-src="${esc(v.src)}" onclick="RVP.play(this)">
+                        <div class="review-video-thumb">
+                            <div class="vpo-btn"><i class="fas fa-play"></i></div>
+                        </div>
                     </div>
-                </div>
-                ${reviewVideos[0].caption ? `<div class="review-video-caption"><i class="fas fa-user-circle"></i> ${esc(reviewVideos[0].caption)}</div>` : ''}
+                </div>`).join('')}
             </div>
-            ${reviewVideos.length > 1 ? `
+            ${reviewVideos.length > 3 ? `
             <a href="#reviews" class="btn btn-outline btn-ripple" style="gap:10px;">
                 <i class="fas fa-play-circle" style="color:var(--gold);"></i>
                 شاهد جميع آراء الزبائن (${reviewVideos.length} مقطع)
@@ -239,7 +266,7 @@ ${trustBarHTML()}
                 <div class="form-row">
                     <div class="form-group">
                         <label for="contactName">الاسم الكامل</label>
-                        <input type="text" id="contactName" name="name" placeholder="أدخل اسمك الكامل" required>
+                        <input type="text" id="contactName" name="name" placeholder="أدخل اسمك الكامل">
                     </div>
                     <div class="form-group">
                         <label for="contactPhone">رقم الهاتف</label>
@@ -252,15 +279,49 @@ ${trustBarHTML()}
                 </div>
                 <div class="form-group">
                     <label for="contactMessage">رسالتك</label>
-                    <textarea id="contactMessage" name="message" placeholder="اكتب رسالتك هنا..." rows="4" required></textarea>
+                    <textarea id="contactMessage" name="message" placeholder="اكتب رسالتك هنا..." rows="4"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block btn-ripple">
                     <i class="fab fa-whatsapp"></i> إرسال عبر واتساب
                 </button>
-                <p style="text-align:center;font-size:.78rem;color:var(--text-muted);margin-top:12px;">
-                    <i class="fas fa-lock"></i> معلوماتك تُستخدم فقط للرد على رسالتك
-                </p>
+                <div style="text-align:center;margin-top:14px;display:flex;flex-direction:column;gap:8px;align-items:center;">
+                    <p style="font-size:.78rem;color:var(--text-muted);margin:0;">
+                        <i class="fas fa-lock"></i> معلوماتك تُستخدم فقط للرد على رسالتك
+                    </p>
+                    <p style="font-size:.82rem;color:var(--text-muted);margin:0;">
+                        ليس لديك واتساب؟
+                        <a href="tel:+213775108618" style="color:var(--gold);font-weight:700;">
+                            <i class="fas fa-phone"></i> اتصل بنا مباشرة
+                        </a>
+                    </p>
+                </div>
             </form>
+        </div>
+    </div>
+</section>
+
+<!-- ══ LOCATION ══════════════════════════════════════════════ -->
+<section class="section section-alt" id="location">
+    <div class="container">
+        <div class="section-header text-center" style="margin-bottom:32px;">
+            <h2 class="section-title">موقعنا</h2>
+            <p class="section-subtitle">ورشة يحيى للموس البوسعادي — بوسعادة، المسيلة</p>
+        </div>
+        <div style="border-radius:16px;overflow:hidden;border:2px solid var(--primary-border);box-shadow:0 4px 24px rgba(0,0,0,.5);">
+            <iframe
+                src="https://maps.google.com/maps?q=35.2110693,4.1865295&z=17&output=embed"
+                width="100%" height="380" style="border:0;display:block;"
+                allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="موقع ورشة يحيى للموس البوسعادي">
+            </iframe>
+        </div>
+        <div style="display:flex;justify-content:center;margin-top:20px;">
+            <a href="https://maps.app.goo.gl/ELJRVAZxDuxWPjF5A" target="_blank" rel="noopener"
+               class="btn btn-outline btn-ripple" style="gap:10px;">
+                <i class="fas fa-map-marker-alt" style="color:var(--gold);"></i>
+                فتح في خرائط Google
+            </a>
         </div>
     </div>
 </section>
@@ -639,7 +700,7 @@ ${trustBarHTML()}
                 <div class="product-image">
                     ${p.badge ? `<span class="product-badge">${esc(String(p.badge))}</span>` : ''}
                     <img src="${esc(p.image||'')}" alt="${esc(p.name)}" loading="lazy">
-                    <a class="product-quick-view-hint" href="#product/${p.id}"><i class="fas fa-eye"></i> عرض التفاصيل</a>
+                    <a class="product-quick-view-hint" href="#product/${p.slug || p.id}"><i class="fas fa-eye"></i> عرض التفاصيل</a>
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">${esc(p.name)}</h3>
@@ -677,7 +738,7 @@ ${trustBarHTML()}
                     ${badgeHTML}
                     <img src="${esc(imgs[0] || '')}" alt="${esc(product.name)}" id="mainProductImg">
                 </div>
-                ${thumbsHTML ? `<div class="product-gallery-thumbs">${thumbsHTML}</div>` : ''}
+                ${false && thumbsHTML ? `<div class="product-gallery-thumbs">${thumbsHTML}</div>` : ''}
             </div>
             <div class="product-detail-info">
                 <span class="product-category-tag">${esc(catLabel)}</span>
@@ -762,7 +823,7 @@ ${trustBarHTML()}
         ${vids.length ? `
         <div class="review-video-grid" id="reviewsGrid">
             ${vids.map((v, i) => `
-            <div class="review-video-card fade-in" style="animation-delay:${i * 0.05}s">
+            <div class="review-video-card" style="animation-delay:${i * 0.05}s">
                 <div class="review-video-wrap" data-src="${esc(v.src)}" onclick="RVP.play(this)">
                     <div class="review-video-thumb">
                         <div class="vpo-btn"><i class="fas fa-play"></i></div>
@@ -792,6 +853,8 @@ window.RVP = {
     play(wrap) {
         const src = wrap.dataset.src;
         if (!src) return;
+        // Pause all other playing review videos
+        document.querySelectorAll('video.review-video').forEach(v => { v.pause(); });
         const video = document.createElement('video');
         video.controls = true;
         video.playsinline = true;

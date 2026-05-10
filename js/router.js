@@ -33,6 +33,8 @@ window.Router = (() => {
 
         }
 
+        if (window.FBQ) FBQ('PageView');
+
         if (scrollToId) {
             setTimeout(() => {
                 const el = document.getElementById(scrollToId);
@@ -48,7 +50,7 @@ window.Router = (() => {
         if (!main) return;
 
         await Products.init(null, false);
-        const product = Products.getAll().find(p => String(p.id) === String(id));
+        const product = Products.getAll().find(p => p.slug === id || String(p.id) === String(id));
 
         if (!product) {
             renderPage('products');
@@ -62,6 +64,13 @@ window.Router = (() => {
             UI.reinit();
             document.title = `${product.name} | ورشة يحيى`;
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            if (window.FBQ) FBQ('ViewContent', {
+                content_ids: [String(product.id)],
+                content_name: product.name,
+                content_type: 'product',
+                value: product.price,
+                currency: 'DZD',
+            });
         }
         window.scrollTo(0, 0);
     }

@@ -126,7 +126,7 @@ window.Products = (() => {
         ${badgeHtml}${discBadge}
         <img src="${p.image || ''}" alt="${esc(p.name)}" loading="lazy">
         <div class="product-frame"></div>
-        <a class="product-quick-view-hint" href="#product/${p.id}"><i class="fas fa-eye"></i> عرض التفاصيل</a>
+        <a class="product-quick-view-hint" href="#product/${p.slug || p.id}"><i class="fas fa-eye"></i> عرض التفاصيل</a>
     </div>
     <div class="product-info">
         <div class="product-info-top">
@@ -340,7 +340,7 @@ window.Products = (() => {
             document.getElementById('pmWa').dataset.name  = d.name;
             document.getElementById('pmWa').dataset.price = d.price;
             const detailLink = document.getElementById('pmDetail');
-            if (detailLink) detailLink.href = `#product/${d.id}`;
+            if (detailLink) detailLink.href = `#product/${d.slug || d.id}`;
             renderThumbs(_gallery, d.name);
             showNavButtons(_gallery.length > 1);
             updateCounter();

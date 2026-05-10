@@ -397,12 +397,22 @@ window.UI = (() => {
             const subject = document.getElementById('contactSubject')?.value.trim() || '';
             const message = document.getElementById('contactMessage')?.value.trim() || '';
             const storeName = window.BRAND?.storeName || 'ورشة يحيى';
+
+            // Open WhatsApp
             let msg = `مرحباً ${storeName}!\n\n`;
             if (name)    msg += `الاسم: ${name}\n`;
             if (phone)   msg += `الهاتف: ${phone}\n`;
             if (subject) msg += `الموضوع: ${subject}\n\n`;
             if (message) msg += `الرسالة:\n${message}`;
             window.open(`https://wa.me/${CONFIG.waNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+
+            // Save ticket to admin dashboard (silent — don't block UX on failure)
+            fetch(`${CONFIG.apiUrl}/contact`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({ name, phone, subject, message }),
+            }).catch(() => {});
+
             const btn = form.querySelector('.btn');
             const orig = btn.textContent;
             btn.textContent = 'تم الإرسال! ✓';

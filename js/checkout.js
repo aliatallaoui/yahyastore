@@ -10,7 +10,9 @@ window.Checkout = (() => {
 
     function calcShipping(wilayaCode) {
         const w = getWilayaByCode(wilayaCode);
-        return w ? w.shipping : 0;
+        if (!w) return 0;
+        const type = el('checkoutDeliveryType')?.value;
+        return type === 'desk' ? w.desk : w.home;
     }
 
     function updateSummary() {
@@ -57,6 +59,11 @@ window.Checkout = (() => {
         el('checkoutModal')?.classList.add('active');
         document.body.style.overflow = 'hidden';
         updateSummary();
+        if (window.FBQ) FBQ('InitiateCheckout', {
+            value: _cart.subtotal,
+            currency: 'USD',
+            num_items: _cart.count,
+        });
     }
 
     function close() {
@@ -101,9 +108,6 @@ window.Checkout = (() => {
         }
 
         if (!el('checkoutWilaya')?.value) { showError('checkoutWilaya', 'wilayaError', 'الولاية مطلوبة'); ok = false; }
-
-        const address = el('checkoutAddress')?.value.trim() || '';
-        if (!address) { showError('checkoutAddress', 'addressError', 'العنوان مطلوب'); ok = false; }
 
         return ok;
     }
@@ -180,6 +184,13 @@ window.Checkout = (() => {
             el('checkoutFormScreen').style.display   = 'none';
             el('checkoutConfirmationScreen').style.display = 'flex';
 
+            if (window.FBQ) FBQ('Purchase', {
+                value: totals.total,
+                currency: 'USD',
+                content_ids: _cart.items.map(i => String(i.id)),
+                content_type: 'product',
+                order_id: orderData.order_number,
+            }, orderData.order_number);
             _cart.clear();
         } catch (err) {
             console.error('Order submit error:', err);
@@ -205,6 +216,7 @@ window.Checkout = (() => {
             updateSummary();
             el('wilayaError')?.classList.remove('show');
         });
+        el('checkoutDeliveryType')?.addEventListener('change', updateSummary);
     }
 
     function injectModal() {
@@ -247,13 +259,12 @@ window.Checkout = (() => {
                                 <span class="error-message" id="wilayaError"></span>
                             </div>
                             <div class="form-group">
-                                <label>البلدية / المنطقة (اختياري)</label>
+                                <label>البلدية / المنطقة</label>
                                 <input type="text" id="checkoutCommune" placeholder="اسم البلدية أو المنطقة">
                             </div>
                             <div class="form-group">
-                                <label>العنوان الكامل *</label>
+                                <label>العنوان الكامل</label>
                                 <textarea id="checkoutAddress" placeholder="أدخل عنوان التوصيل بالتفصيل" rows="2" autocomplete="street-address"></textarea>
-                                <span class="error-message" id="addressError"></span>
                             </div>
                             <div class="form-group">
                                 <label>طريقة التسليم</label>

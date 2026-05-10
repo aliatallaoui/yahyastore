@@ -13,6 +13,13 @@ class CartManager {
         if (existing) existing.qty += qty;
         else this.items.push({ id, name, price, qty });
         this._save();
+        if (window.FBQ) FBQ('AddToCart', {
+            content_ids: [String(id)],
+            content_name: name,
+            content_type: 'product',
+            value: price * qty,
+            currency: 'USD',
+        });
     }
 
     updateQty(index, delta) {
