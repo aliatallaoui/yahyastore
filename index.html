@@ -302,16 +302,6 @@
     <!-- Scripts (order matters) -->
     <script src="js/brand-config.js"></script>
 
-    <!-- FBQ helper — safe wrapper around fbq() for SPA event tracking -->
-    <script>
-    window.FBQ = function(event, params, eventID) {
-        try {
-            var opts = eventID ? { eventID: eventID } : undefined;
-            fbq('track', event, params || {}, opts);
-        } catch(e) {}
-    };
-    </script>
-
     <script src="js/config.js"></script>
     <script src="js/analytics.js"></script>
     <script src="js/cart.js"></script>
