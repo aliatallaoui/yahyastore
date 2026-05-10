@@ -178,9 +178,15 @@ ${trustBarHTML()}
         ${reviewVideos.length ? `
         <div style="display:flex;flex-direction:column;align-items:center;gap:24px;">
             <div class="review-video-card fade-in" style="max-width:320px;width:100%;">
-                <video controls playsinline preload="metadata" class="review-video">
-                    <source src="${esc(reviewVideos[0].src)}" type="video/mp4">
-                </video>
+                <div class="review-video-wrap">
+                    <video controls playsinline preload="metadata" class="review-video"
+                           onplay="this.closest('.review-video-wrap').classList.add('playing')">
+                        <source src="${esc(reviewVideos[0].src)}" type="video/mp4">
+                    </video>
+                    <div class="video-play-overlay" onclick="this.previousElementSibling.play()">
+                        <div class="vpo-btn"><i class="fas fa-play"></i></div>
+                    </div>
+                </div>
                 ${reviewVideos[0].caption ? `<div class="review-video-caption"><i class="fas fa-user-circle"></i> ${esc(reviewVideos[0].caption)}</div>` : ''}
             </div>
             ${reviewVideos.length > 1 ? `
@@ -761,9 +767,15 @@ ${trustBarHTML()}
         <div class="review-video-grid" id="reviewsGrid">
             ${vids.map((v, i) => `
             <div class="review-video-card fade-in" style="animation-delay:${i * 0.05}s">
-                <video controls playsinline preload="none" class="review-video" loading="lazy">
-                    <source src="${esc(v.src)}" type="video/mp4">
-                </video>
+                <div class="review-video-wrap">
+                    <video controls playsinline preload="none" class="review-video"
+                           onplay="this.closest('.review-video-wrap').classList.add('playing')">
+                        <source src="${esc(v.src)}" type="video/mp4">
+                    </video>
+                    <div class="video-play-overlay" onclick="this.previousElementSibling.play()">
+                        <div class="vpo-btn"><i class="fas fa-play"></i></div>
+                    </div>
+                </div>
                 ${v.caption ? `<div class="review-video-caption"><i class="fas fa-user-circle"></i> ${esc(v.caption)}</div>` : ''}
             </div>`).join('')}
         </div>` : `
