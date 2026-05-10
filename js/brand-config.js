@@ -105,11 +105,20 @@ window.BRAND = {
         { icon: 'fas fa-shield-alt',      title: 'ضمان الجودة',            desc: 'جودة مضمونة أو استرجاع خلال 7 أيام من الاستلام' },
     ],
 
-    /* Customer review videos — drop .mp4 files in /videos/ then add entries here */
+    /* Customer review videos */
     reviewVideos: [
-        // { src: 'videos/review-1.mp4', poster: 'videos/review-1-thumb.jpg', caption: 'محمد — المسيلة' },
-        // { src: 'videos/review-2.mp4', caption: 'سمية — الجزائر العاصمة' },
-        // { src: 'videos/review-3.mp4', caption: 'عبد القادر — وهران' },
+        { src: 'videos/IMG_4433.MP4' },
+        { src: 'videos/IMG_4586.MP4' },
+        { src: 'videos/IMG_4598.MP4' },
+        { src: 'videos/IMG_4652.MP4' },
+        { src: 'videos/IMG_4667.MP4' },
+        { src: 'videos/IMG_4695.MP4' },
+        { src: 'videos/IMG_4696.MP4' },
+        { src: 'videos/IMG_4706.MP4' },
+        { src: 'videos/IMG_4741.MP4' },
+        { src: 'videos/IMG_4742.MP4' },
+        { src: 'videos/IMG_4956.MP4' },
+        { src: 'videos/IMG_4957.MP4' },
     ],
 
     /* Home page categories */
