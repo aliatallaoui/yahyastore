@@ -130,6 +130,16 @@ window.BRAND = {
         { src: 'videos/IMG_4957.MP4' },
     ],
 
+    /* Upsell offer shown on inline order success screen */
+    upsell: {
+        id:      7,
+        name:    'مبرد ذكير (مضاية) ذات جودة عالية',
+        price:   3920,
+        slug:    'mabrad-dhakir-mdaya',
+        image:   'images/p7-main.jpg',
+        tagline: 'يحافظ على حدة موسك — التوصيل مجاني مع طلبك الحالي!',
+    },
+
     /* Home page categories */
     homeCategories: [
         { icon: 'fas fa-box-open',   key: 'bundle',    title: 'الأطقم',        desc: 'مجموعات متكاملة بسعر مميز' },

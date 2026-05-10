@@ -203,20 +203,10 @@ window.IOF = (() => {
                 product_name: _product.name,
             });
 
+            const orderNumber = data.data?.order_number || '';
             const formEl = el('iof_form');
             if (formEl) {
-                formEl.innerHTML = `
-<div style="text-align:center;padding:32px 16px;">
-    <div style="font-size:3rem;margin-bottom:12px;">✅</div>
-    <h3 style="color:var(--gold,#c8a656);margin-bottom:8px;font-size:1.1rem;">تم استلام طلبك!</h3>
-    <p style="color:var(--text-muted,#999);font-size:.88rem;margin-bottom:4px;">
-        رقم الطلب: <strong style="color:var(--text,#fff);font-family:monospace;">${data.data?.order_number || ''}</strong>
-    </p>
-    <p style="color:var(--text-muted,#999);font-size:.82rem;margin-bottom:20px;">سيتصل بك فريقنا لتأكيد طلبك قريباً</p>
-    <a href="#track" style="font-size:.83rem;color:var(--gold,#c8a656);text-decoration:underline;">
-        <i class="fas fa-search"></i> تتبع طلبك
-    </a>
-</div>`;
+                _showSuccess(formEl, orderNumber, phone);
             }
         } catch (err) {
             if (submitEl) {
@@ -225,6 +215,112 @@ window.IOF = (() => {
             }
             showMsg('<i class="fas fa-exclamation-circle"></i> ' +
                 (err.message !== 'server' && err.message ? err.message : 'حدث خطأ، حاول مرة أخرى أو تواصل معنا'), true);
+        }
+    }
+
+    function _showSuccess(formEl, orderNumber, phone) {
+        const upsell    = window.BRAND?.upsell;
+        const isUpsell  = upsell && Number(upsell.id) !== Number(_product?.id);
+
+        const upsellHTML = isUpsell ? `
+<div class="iof-upsell" id="iof_upsell">
+    <div class="iof-upsell-badge"><i class="fas fa-fire"></i> عرض خاص لك فقط</div>
+    <div class="iof-upsell-body">
+        <img src="${upsell.image}" alt="${upsell.name}" class="iof-upsell-img" onerror="this.style.display='none'">
+        <div class="iof-upsell-info">
+            <div class="iof-upsell-name">${upsell.name}</div>
+            <div class="iof-upsell-tagline"><i class="fas fa-truck"></i> ${upsell.tagline}</div>
+            <div class="iof-upsell-price">${fmt(upsell.price)} <span>DZD</span></div>
+        </div>
+    </div>
+    <div class="iof-upsell-actions">
+        <button class="iof-upsell-yes" id="iof_upsell_yes">
+            <i class="fas fa-plus-circle"></i> أضف للطلب الآن
+        </button>
+        <button class="iof-upsell-no" id="iof_upsell_no">لا شكراً</button>
+    </div>
+    <div id="iof_upsell_msg" style="display:none;margin-top:10px;font-size:.82rem;font-weight:700;text-align:center;padding:8px;border-radius:7px;"></div>
+</div>` : '';
+
+        formEl.innerHTML = `
+<div class="iof-success-head">
+    <div style="font-size:3rem;margin-bottom:12px;">✅</div>
+    <h3 style="color:var(--gold,#c8a656);margin-bottom:8px;font-size:1.1rem;">تم استلام طلبك!</h3>
+    <p style="color:var(--text-muted,#999);font-size:.88rem;margin-bottom:4px;">
+        رقم الطلب: <strong style="color:var(--text,#fff);font-family:monospace;" id="iof_order_number">${orderNumber}</strong>
+    </p>
+    <p style="color:var(--text-muted,#999);font-size:.82rem;margin-bottom:${isUpsell ? '0' : '20px'};">سيتصل بك فريقنا لتأكيد طلبك قريباً</p>
+    ${!isUpsell ? `<a href="#track" style="font-size:.83rem;color:var(--gold,#c8a656);text-decoration:underline;"><i class="fas fa-search"></i> تتبع طلبك</a>` : ''}
+</div>
+${upsellHTML}`;
+
+        if (isUpsell) {
+            document.getElementById('iof_upsell_yes')?.addEventListener('click', () => acceptUpsell(orderNumber, phone, upsell));
+            document.getElementById('iof_upsell_no')?.addEventListener('click', declineUpsell);
+        }
+    }
+
+    async function acceptUpsell(orderNumber, phone, upsell) {
+        const yesBtn = document.getElementById('iof_upsell_yes');
+        const noBtn  = document.getElementById('iof_upsell_no');
+        const msgEl  = document.getElementById('iof_upsell_msg');
+
+        if (yesBtn) { yesBtn.disabled = true; yesBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>'; }
+        if (noBtn)  noBtn.disabled = true;
+
+        try {
+            const res  = await fetch(CONFIG.apiUrl + '/orders/upsell', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-API-Key': CONFIG.apiKey },
+                body:    JSON.stringify({
+                    order_number:  orderNumber,
+                    phone,
+                    product_id:    upsell.id,
+                    product_name:  upsell.name,
+                    unit_price:    upsell.price,
+                    qty:           1,
+                }),
+            });
+            const data = await res.json();
+
+            if (!res.ok || !data.success) throw new Error(data.message || 'server');
+
+            const upsellEl = document.getElementById('iof_upsell');
+            if (upsellEl) {
+                upsellEl.innerHTML = `
+<div style="text-align:center;padding:18px 12px;">
+    <div style="font-size:2rem;margin-bottom:8px;">🎉</div>
+    <div style="color:var(--gold,#c8a656);font-weight:800;font-size:.95rem;margin-bottom:6px;">تمت الإضافة!</div>
+    <div style="color:var(--text-muted,#999);font-size:.82rem;margin-bottom:4px;">
+        الإجمالي الجديد: <strong style="color:var(--gold,#c8a656);">${fmt(data.new_total)} DZD</strong>
+    </div>
+    <div style="color:var(--text-muted,#999);font-size:.78rem;">المبرد مضاف لطلبك — التوصيل مجاني</div>
+    <a href="#track" style="display:inline-block;margin-top:14px;font-size:.82rem;color:var(--gold,#c8a656);text-decoration:underline;">
+        <i class="fas fa-search"></i> تتبع طلبك
+    </a>
+</div>`;
+            }
+        } catch {
+            if (yesBtn) { yesBtn.disabled = false; yesBtn.innerHTML = '<i class="fas fa-plus-circle"></i> أضف للطلب الآن'; }
+            if (noBtn)  noBtn.disabled = false;
+            if (msgEl)  {
+                msgEl.style.display = 'block';
+                msgEl.style.color   = '#e74c3c';
+                msgEl.textContent   = 'حدث خطأ، حاول مرة أخرى';
+            }
+        }
+    }
+
+    function declineUpsell() {
+        const upsellEl = document.getElementById('iof_upsell');
+        if (upsellEl) {
+            upsellEl.style.animation = 'iof-fade-out .25s ease forwards';
+            setTimeout(() => {
+                upsellEl.innerHTML = `<div style="text-align:center;padding:12px;font-size:.8rem;color:var(--text-muted,#888);">
+                    <a href="#track" style="color:var(--gold,#c8a656);text-decoration:underline;"><i class="fas fa-search"></i> تتبع طلبك</a>
+                </div>`;
+                upsellEl.style.animation = '';
+            }, 260);
         }
     }
 
