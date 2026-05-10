@@ -179,8 +179,8 @@ ${trustBarHTML()}
         <div style="display:flex;flex-direction:column;align-items:center;gap:24px;">
             <div class="review-video-card fade-in" style="max-width:320px;width:100%;">
                 <div class="review-video-wrap">
-                    <video controls playsinline preload="metadata" class="review-video"
-                           onplay="this.closest('.review-video-wrap').classList.add('playing')">
+                    <video playsinline preload="metadata" class="review-video"
+                           onplay="this.setAttribute('controls','');this.closest('.review-video-wrap').classList.add('playing')">
                         <source src="${esc(reviewVideos[0].src)}" type="video/mp4">
                     </video>
                     <div class="video-play-overlay" onclick="this.previousElementSibling.play()">
@@ -768,8 +768,8 @@ ${trustBarHTML()}
             ${vids.map((v, i) => `
             <div class="review-video-card fade-in" style="animation-delay:${i * 0.05}s">
                 <div class="review-video-wrap">
-                    <video controls playsinline preload="none" class="review-video"
-                           onplay="this.closest('.review-video-wrap').classList.add('playing')">
+                    <video playsinline preload="none" class="review-video"
+                           onplay="this.setAttribute('controls','');this.closest('.review-video-wrap').classList.add('playing')">
                         <source src="${esc(v.src)}" type="video/mp4">
                     </video>
                     <div class="video-play-overlay" onclick="this.previousElementSibling.play()">

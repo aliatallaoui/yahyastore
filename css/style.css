@@ -1400,8 +1400,8 @@ h4 { font-size:1.1rem; }
     border-radius: 14px;
     overflow: hidden;
     background: #0f0f0a;
-    border: 1.5px solid rgba(212,175,55,.35);
-    box-shadow: 0 0 0 1px rgba(212,175,55,.08), 0 4px 18px rgba(0,0,0,.4);
+    border: 2px solid rgba(212,175,55,.6);
+    box-shadow: 0 0 0 1px rgba(212,175,55,.12), 0 4px 18px rgba(0,0,0,.5);
     transition: border-color .2s, box-shadow .2s, transform .2s;
 }
 .review-video-card:hover {
@@ -1411,6 +1411,7 @@ h4 { font-size:1.1rem; }
 }
 .review-video-wrap {
     position: relative;
+    isolation: isolate;
 }
 .review-video {
     width: 100%;
@@ -1418,15 +1419,18 @@ h4 { font-size:1.1rem; }
     aspect-ratio: 9 / 16;
     object-fit: cover;
     background: #000;
+    position: relative;
+    z-index: 0;
 }
 .video-play-overlay {
     position: absolute;
     inset: 0;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background: linear-gradient(to top, rgba(0,0,0,.45) 0%, transparent 60%);
+    background: linear-gradient(to top, rgba(0,0,0,.55) 0%, rgba(0,0,0,.1) 60%);
     transition: opacity .25s;
 }
 .review-video-wrap.playing .video-play-overlay {
