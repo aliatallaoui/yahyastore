@@ -20,6 +20,55 @@ window.Pages = (() => {
     </div>
 </div>`;
 
+    /* ── SALE BANNER ──────────────────────────────────────────── */
+    function saleBannerHTML() {
+        if (!BRAND.saleEnd) return '';
+        const end = new Date(BRAND.saleEnd);
+        if (isNaN(end) || end < new Date()) return '';
+        const id = 'saleCd_' + Date.now();
+        return `
+<div class="sale-banner" id="saleBanner">
+    <div class="sale-banner-inner container">
+        <div class="sale-flame">🔥</div>
+        <div class="sale-text">
+            <div class="sale-label">${esc(BRAND.saleLabel || 'عرض محدود')}</div>
+            <div class="sale-discount">${esc(BRAND.saleBadge || 'خصم 20%')} <span class="sale-on">على جميع المنتجات</span></div>
+        </div>
+        <div class="sale-countdown" id="${id}">
+            <div class="scd-unit"><span class="scd-num" id="${id}_d">00</span><span class="scd-lbl">يوم</span></div>
+            <div class="scd-sep">:</div>
+            <div class="scd-unit"><span class="scd-num" id="${id}_h">00</span><span class="scd-lbl">ساعة</span></div>
+            <div class="scd-sep">:</div>
+            <div class="scd-unit"><span class="scd-num" id="${id}_m">00</span><span class="scd-lbl">دقيقة</span></div>
+            <div class="scd-sep">:</div>
+            <div class="scd-unit"><span class="scd-num" id="${id}_s">00</span><span class="scd-lbl">ثانية</span></div>
+        </div>
+        <a href="#products" class="sale-cta">تسوّق الآن <i class="fas fa-arrow-left"></i></a>
+    </div>
+</div>
+<script>
+(function(){
+    var end = new Date('${BRAND.saleEnd}');
+    function pad(n){return n<10?'0'+n:n;}
+    function tick(){
+        var diff = Math.max(0, end - new Date());
+        var d = Math.floor(diff/86400000);
+        var h = Math.floor((diff%86400000)/3600000);
+        var m = Math.floor((diff%3600000)/60000);
+        var s = Math.floor((diff%60000)/1000);
+        var el = function(sfx){return document.getElementById('${id}_'+sfx);};
+        if(el('d')) el('d').textContent = pad(d);
+        if(el('h')) el('h').textContent = pad(h);
+        if(el('m')) el('m').textContent = pad(m);
+        if(el('s')) el('s').textContent = pad(s);
+        if(diff > 0) setTimeout(tick, 1000);
+        else { var b = document.getElementById('saleBanner'); if(b) b.style.display='none'; }
+    }
+    tick();
+})();
+</script>`;
+    }
+
     /* ── HOME ─────────────────────────────────────────────────── */
     function home() {
         const wa           = CONFIG.waNumber || BRAND.whatsapp;
@@ -31,6 +80,7 @@ window.Pages = (() => {
         const waContactUrl = `https://wa.me/${wa}?text=${encodeURIComponent('مرحباً ' + BRAND.storeName + '، كيف يمكنني الطلب؟')}`;
 
         return `
+${saleBannerHTML()}
 <!-- ══ HERO ══════════════════════════════════════════════════ -->
 <section class="hero" id="home" aria-label="الصفحة الرئيسية">
     <div class="container hero-content">
