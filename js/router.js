@@ -1,9 +1,10 @@
 window.Router = (() => {
-    const PAGE_ROUTES = new Set(['home', 'products', 'faq', 'privacy', 'shipping']);
+    const PAGE_ROUTES = new Set(['home', 'products', 'faq', 'privacy', 'shipping', 'reviews']);
 
     const PAGE_TITLES = {
         home:     'ورشة يحيى للموس البوسعادي — صناعة يدوية 100%',
         products: 'جميع الموس والأطقم | ورشة يحيى',
+        reviews:  'آراء الزبائن | ورشة يحيى',
         faq:      'الأسئلة الشائعة | ورشة يحيى',
         privacy:  'سياسة الخصوصية | ورشة يحيى',
         shipping: 'الشحن والتوصيل | ورشة يحيى',
@@ -30,22 +31,6 @@ window.Router = (() => {
             document.title = PAGE_TITLES[page] || PAGE_TITLES.home;
             setActiveNav(page);
 
-            // Wire up category cards on homepage to filter products
-            if (page === 'home') {
-                document.querySelectorAll('.category-card[data-category]').forEach(card => {
-                    card.addEventListener('click', e => {
-                        const cat = card.dataset.category;
-                        if (cat === 'sale') return; // falls through to #products
-                        e.preventDefault();
-                        // Navigate to products and apply filter after render
-                        location.hash = '#products';
-                        setTimeout(() => {
-                            const tab = document.querySelector(`.filter-tab[data-filter="${cat}"]`);
-                            if (tab) tab.click();
-                        }, 200);
-                    });
-                });
-            }
         }
 
         if (scrollToId) {
