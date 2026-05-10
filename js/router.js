@@ -64,6 +64,7 @@ window.Router = (() => {
             _current = key;
             main.innerHTML = Pages.productDetail(product);
             UI.reinit();
+            if (window.IOF) IOF.init(product);
             document.title = `${product.name} | ورشة يحيى`;
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
             if (window.FBQ) FBQ('ViewContent', {

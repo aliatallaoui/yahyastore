@@ -810,10 +810,68 @@ ${trustBarHTML()}
                     <i class="fas fa-check-circle"></i>
                     الدفع عند الاستلام — لن تدفع أي شيء الآن
                 </div>
-                <div class="product-detail-desc">
+
+                ${product.in_stock === false ? `
+                <div style="margin-top:16px;padding:14px 20px;border-radius:10px;background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.3);color:#e74c3c;font-weight:700;font-size:.95rem;text-align:center;">
+                    <i class="fas fa-times-circle"></i> هذا المنتج غير متوفر حالياً
+                </div>
+                <div class="product-detail-desc"><p>${esc(product.description || product.short_description || '')}</p></div>
+                ${featuresHTML ? `<div class="product-detail-features"><h3>لماذا تختار هذا المنتج؟</h3><ul>${featuresHTML}</ul></div>` : ''}` : `
+
+                <!-- ── Inline COD order form ───────────────────── -->
+                <div class="inline-order-box" id="iof_form">
+                    <div class="iof-header">
+                        <i class="fas fa-shopping-bag"></i> اطلب الآن — الدفع عند الاستلام
+                    </div>
+                    <div class="iof-fields">
+                        <div class="iof-row">
+                            <input type="text"  id="iof_name"  placeholder="الاسم الكامل" autocomplete="name"
+                                   style="flex:1;min-width:130px;">
+                            <input type="tel"   id="iof_phone" placeholder="05XXXXXXXX"   autocomplete="tel"
+                                   inputmode="numeric" maxlength="10" style="flex:1;min-width:130px;direction:ltr;">
+                        </div>
+                        <select id="iof_wilaya" onchange="IOF.updateSummary()" style="width:100%;">
+                            <option value="">🗺 اختر الولاية</option>
+                            ${(CONFIG.wilayas || []).map(w =>
+                                `<option value="${w.code}">${w.code}. ${w.name} — توصيل ${w.home.toLocaleString('en-US')} DZD</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    <div class="iof-qty-row">
+                        <span style="font-size:.9rem;color:var(--text-muted,#888);">الكمية:</span>
+                        <div class="iof-qty-ctrl">
+                            <button class="iof-qty-btn" onclick="IOF.minus()">−</button>
+                            <span id="iof_qty_display" style="min-width:28px;text-align:center;font-weight:700;">1</span>
+                            <button class="iof-qty-btn" onclick="IOF.plus()">+</button>
+                        </div>
+                    </div>
+                    <div class="iof-summary">
+                        <div class="iof-summary-row">
+                            <span>${esc(product.name)}</span>
+                            <span id="iof_subtotal">${Number(product.price).toLocaleString('en-US')} DZD</span>
+                        </div>
+                        <div class="iof-summary-row">
+                            <span>سعر الشحن</span>
+                            <span id="iof_shipping">—</span>
+                        </div>
+                        <div class="iof-summary-row iof-total-row">
+                            <span>الإجمالي</span>
+                            <span id="iof_total">${Number(product.price).toLocaleString('en-US')} DZD + الشحن</span>
+                        </div>
+                    </div>
+                    <button id="iof_submit" onclick="IOF.submit()" class="iof-submit-btn">
+                        <i class="fas fa-check-circle"></i> تأكيد الطلب
+                    </button>
+                    <div id="iof_msg" style="display:none;padding:10px 14px;border-radius:8px;border:1px solid;margin-top:10px;font-size:.85rem;font-weight:600;text-align:center;"></div>
+                    <p style="text-align:center;font-size:.75rem;color:var(--text-muted,#888);margin-top:10px;margin-bottom:0;">
+                        <i class="fas fa-lock"></i> بياناتك محمية — الدفع فقط عند استلام الطلب
+                    </p>
+                </div>`}
+
+                <div class="product-detail-desc" style="margin-top:20px;">
                     <p>${esc(product.description || product.short_description || '')}</p>
                 </div>
-                ${featuresHTML ? `
+                ${featuresHTML && product.in_stock !== false ? `
                 <div class="product-detail-features">
                     <h3>لماذا تختار هذا المنتج؟</h3>
                     <ul>${featuresHTML}</ul>
@@ -821,30 +879,10 @@ ${trustBarHTML()}
                 <div class="product-detail-meta">
                     <div class="meta-item"><i class="fas fa-money-bill-wave"></i><span>الدفع عند الاستلام — لا بطاقة بنكية</span></div>
                     <div class="meta-item"><i class="fas fa-truck"></i><span>توصيل حسب الولاية — سريع وآمن</span></div>
-                    <div class="meta-item"><i class="fas fa-phone-alt"></i><span>تأكيد هاتفي قبل الشحن</span></div>
-                    <div class="meta-item"><i class="fas fa-shield-alt"></i><span>منتج مختار بعناية — جودة مضمونة</span></div>
                 </div>
-                ${product.in_stock === false ? `
-                <div style="margin-top:16px;padding:14px 20px;border-radius:10px;background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.3);color:#e74c3c;font-weight:700;font-size:.95rem;text-align:center;">
-                    <i class="fas fa-times-circle"></i> هذا المنتج غير متوفر حالياً
-                </div>` : `
-                <div class="product-detail-actions">
-                    <div class="qty-selector" role="group" aria-label="الكمية">
-                        <button class="qty-btn" id="qtyMinus" aria-label="إنقاص">−</button>
-                        <span class="qty-value" id="qtyValue">1</span>
-                        <button class="qty-btn" id="qtyPlus"  aria-label="زيادة">+</button>
-                    </div>
-                    <button class="btn btn-primary btn-ripple btn-lg add-to-cart-detail"
-                            data-id="${product.id}" data-name="${esc(product.name)}" data-price="${product.price}">
-                        <i class="fas fa-cart-plus"></i> أضف للسلة
-                    </button>
-                </div>`}
-                <a href="${waProductUrl}" target="_blank" class="btn btn-whatsapp btn-block btn-ripple">
-                    <i class="fab fa-whatsapp"></i> اطلب مباشرة عبر واتساب
+                <a href="${waProductUrl}" target="_blank" class="btn btn-whatsapp btn-block btn-ripple" style="margin-top:12px;">
+                    <i class="fab fa-whatsapp"></i> استفسار عبر واتساب
                 </a>
-                <p style="text-align:center;font-size:.78rem;color:var(--text-muted);margin-top:8px;">
-                    <i class="fas fa-lock"></i> دفع آمن عند الاستلام — لا حاجة لبطاقة بنكية
-                </p>
             </div>
         </div>
     </div>
