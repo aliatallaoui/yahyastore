@@ -3730,3 +3730,36 @@ select.form-control option { background: #1c1a17; color: var(--text); }
 }
 .iof-submit-btn:hover:not(:disabled) { opacity: .9; transform: translateY(-1px); }
 .iof-submit-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+/* Promo code row inside inline order form */
+.iof-promo-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+.iof-promo-row input {
+    flex: 1;
+    padding: 9px 12px;
+    border-radius: 9px;
+    border: 1px solid var(--border, #2a2a1e);
+    background: var(--bg, #111108);
+    color: var(--text, #e8e0c8);
+    font-family: monospace;
+    font-size: .88rem;
+    letter-spacing: .05em;
+}
+.iof-promo-row input:focus { outline: none; border-color: var(--gold, #c8a656); }
+.iof-promo-btn {
+    padding: 9px 16px;
+    border-radius: 9px;
+    border: 1px solid var(--gold, #c8a656);
+    background: transparent;
+    color: var(--gold, #c8a656);
+    font-weight: 700;
+    font-size: .82rem;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+    transition: background .15s;
+}
+.iof-promo-btn:hover { background: rgba(200,166,86,.1); }

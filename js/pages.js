@@ -793,7 +793,7 @@ ${trustBarHTML()}
                     ${badgeHTML}
                     <img src="${esc(imgs[0] || '')}" alt="${esc(product.name)}" id="mainProductImg">
                 </div>
-                ${false && thumbsHTML ? `<div class="product-gallery-thumbs">${thumbsHTML}</div>` : ''}
+                ${thumbsHTML ? `<div class="product-gallery-thumbs">${thumbsHTML}</div>` : ''}
             </div>
             <div class="product-detail-info">
                 <span class="product-category-tag">${esc(catLabel)}</span>
@@ -850,6 +850,10 @@ ${trustBarHTML()}
                             <span>${esc(product.name)}</span>
                             <span id="iof_subtotal">${Number(product.price).toLocaleString('en-US')} DZD</span>
                         </div>
+                        <div class="iof-summary-row" id="iof_discount_row" style="display:none;color:#22c55e;">
+                            <span id="iof_promo_label">خصم</span>
+                            <span id="iof_discount_val">—</span>
+                        </div>
                         <div class="iof-summary-row">
                             <span>سعر الشحن</span>
                             <span id="iof_shipping">—</span>
@@ -859,6 +863,13 @@ ${trustBarHTML()}
                             <span id="iof_total">${Number(product.price).toLocaleString('en-US')} DZD + الشحن</span>
                         </div>
                     </div>
+                    <div class="iof-promo-row">
+                        <input type="text" id="iof_promo" placeholder="كود الخصم (اختياري)"
+                               style="flex:1;text-transform:uppercase;font-family:monospace;"
+                               onkeydown="if(event.key==='Enter'){event.preventDefault();IOF.applyPromo();}">
+                        <button type="button" onclick="IOF.applyPromo()" class="iof-promo-btn">تطبيق</button>
+                    </div>
+                    <div id="iof_promo_msg" style="display:none;font-size:.8rem;font-weight:600;padding:6px 10px;border-radius:7px;margin-bottom:4px;text-align:center;border:1px solid;"></div>
                     <button id="iof_submit" onclick="IOF.submit()" class="iof-submit-btn">
                         <i class="fas fa-check-circle"></i> تأكيد الطلب
                     </button>
