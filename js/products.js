@@ -74,6 +74,7 @@ window.Products = (() => {
 
             const cardData = [
                 `data-id="${p.id}"`,
+                `data-slug="${esc(p.slug || p.id)}"`,
                 `data-name="${esc(p.name)}"`,
                 `data-price="${p.price}"`,
                 `data-discount="${p.discount || discPct || 0}"`,
@@ -360,22 +361,11 @@ window.Products = (() => {
         overlay.addEventListener('click', closeModal);
 
         document.addEventListener('click', (e) => {
-            if (e.target.closest('.add-to-cart, .add-to-cart-detail, #pmCart, #pmWa, .product-quick-view-hint')) return;
+            if (e.target.closest('.add-to-cart, .add-to-cart-detail, #pmCart, #pmWa, .product-quick-view-hint, .quick-whatsapp, .quick-add')) return;
             const card = e.target.closest('.product-card');
             if (!card || !card.dataset.id) return;
-            let gallery = [];
-            try { gallery = JSON.parse(card.dataset.gallery || '[]'); } catch {}
-            openModal({
-                id:       card.dataset.id,
-                name:     card.dataset.name,
-                price:    card.dataset.price,
-                oldPrice: card.dataset.oldPrice,
-                img:      card.dataset.img,
-                gallery,
-                desc:          card.dataset.desc,
-                category:      card.dataset.category,
-                categoryLabel: card.dataset.categoryLabel,
-            });
+            const slug = card.dataset.slug || card.dataset.id;
+            location.hash = 'product/' + slug;
         });
 
         // WhatsApp direct from modal
