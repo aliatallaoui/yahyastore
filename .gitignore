@@ -3,9 +3,6 @@ prod.env
 .env
 *.env
 
-# Server config (keep out of public repo)
-nginx-*.conf
-
 # One-off scripts
 test.php
 download-products.js
