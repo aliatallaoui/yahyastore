@@ -213,17 +213,17 @@ window.UI = (() => {
         const lightboxEl = document.getElementById('lightbox');
         if (!lightboxEl) return;
 
-        // Collect images from generic gallery AND product page thumbnails
-        const galleryImages = Array.from(
+        // Rebuild gallery images for the current page on every call
+        let galleryImages = Array.from(
             document.querySelectorAll('.gallery-slide img, .gallery-item img, .product-gallery-thumbs .thumb img')
         ).map(img => ({ src: img.src, alt: img.alt }));
         let idx = 0;
 
+        // Always update window functions so they reference the current page's gallery
         window.openLightbox = (item) => {
-            // Accept a container element or a bare <img> element
             const img = (item.tagName === 'IMG') ? item : item.querySelector('img');
             if (!img) return;
-            const lb  = document.getElementById('lightboxImg');
+            const lb    = document.getElementById('lightboxImg');
             const found = galleryImages.findIndex(g => g.src === img.src);
             if (found < 0 && img.src) { galleryImages.push({ src: img.src, alt: img.alt }); idx = galleryImages.length - 1; }
             else idx = found >= 0 ? found : 0;
@@ -243,20 +243,22 @@ window.UI = (() => {
             setTimeout(() => { lb.src = galleryImages[idx].src; lb.alt = galleryImages[idx].alt; lb.style.opacity = '1'; }, 200);
         };
 
-        lightboxEl.addEventListener('click', e => { if (e.target === e.currentTarget) window.closeLightbox(); });
+        // DOM event listeners are added only once (guarded by data attribute)
+        if (!lightboxEl.dataset.listenersAdded) {
+            lightboxEl.dataset.listenersAdded = '1';
+            lightboxEl.addEventListener('click', e => { if (e.target === e.currentTarget) window.closeLightbox(); });
+            document.getElementById('lightboxClose')?.addEventListener('click', () => window.closeLightbox());
+            document.getElementById('lightboxPrev')?.addEventListener('click', () => window.navigateLightbox(-1));
+            document.getElementById('lightboxNext')?.addEventListener('click', () => window.navigateLightbox(1));
+            document.addEventListener('keydown', e => {
+                if (!lightboxEl.classList.contains('active')) return;
+                if (e.key === 'Escape')     window.closeLightbox();
+                if (e.key === 'ArrowRight') window.navigateLightbox(-1);
+                if (e.key === 'ArrowLeft')  window.navigateLightbox(1);
+            });
+        }
 
-        document.getElementById('lightboxClose')?.addEventListener('click', window.closeLightbox);
-        document.getElementById('lightboxPrev')?.addEventListener('click',  () => window.navigateLightbox(-1));
-        document.getElementById('lightboxNext')?.addEventListener('click',  () => window.navigateLightbox(1));
-
-        document.addEventListener('keydown', e => {
-            if (!lightboxEl.classList.contains('active')) return;
-            if (e.key === 'Escape')     window.closeLightbox();
-            if (e.key === 'ArrowRight') window.navigateLightbox(-1);
-            if (e.key === 'ArrowLeft')  window.navigateLightbox(1);
-        });
-
-        // Click on main product image to open lightbox
+        // Re-attach to main product image on each page (element changes on navigation)
         const mainImg = document.getElementById('mainProductImg');
         if (mainImg) {
             mainImg.style.cursor = 'zoom-in';

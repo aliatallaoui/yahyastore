@@ -7,6 +7,9 @@ prod.env
 test.php
 download-products.js
 
+# Large media (deploy via SCP, not git)
+videos/
+
 # OS / editor
 .DS_Store
 Thumbs.db
