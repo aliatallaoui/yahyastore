@@ -3737,6 +3737,39 @@ select.form-control option { background: #1c1a17; color: var(--text); }
 .iof-submit-btn:hover:not(:disabled) { opacity: .9; transform: translateY(-1px); }
 .iof-submit-btn:disabled { opacity: .6; cursor: not-allowed; }
 
+/* Delivery type toggle inside inline order form */
+.iof-delivery-toggle {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.iof-dt-btn {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 9px;
+    border: 1px solid var(--border, #2a2a1e);
+    background: var(--bg, #111108);
+    color: var(--text-muted, #888);
+    font-family: inherit;
+    font-size: .84rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: border-color .15s, color .15s, background .15s;
+}
+.iof-dt-btn.active {
+    border-color: var(--gold, #c8a656);
+    color: var(--gold, #c8a656);
+    background: rgba(200,166,86,.08);
+}
+.iof-dt-btn:not(.active):hover {
+    border-color: rgba(200,166,86,.4);
+    color: var(--text, #e8e0c8);
+}
+
 /* Promo code row inside inline order form */
 .iof-promo-row {
     display: flex;

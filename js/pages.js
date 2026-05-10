@@ -833,9 +833,19 @@ ${trustBarHTML()}
                         <select id="iof_wilaya" onchange="IOF.updateSummary()" style="width:100%;">
                             <option value="">🗺 اختر الولاية</option>
                             ${(CONFIG.wilayas || []).map(w =>
-                                `<option value="${w.code}">${w.code}. ${w.name} — توصيل ${w.home.toLocaleString('en-US')} DZD</option>`
+                                `<option value="${w.code}">${w.code}. ${w.name}</option>`
                             ).join('')}
                         </select>
+                    </div>
+                    <div class="iof-delivery-toggle">
+                        <button type="button" id="iof_dt_home" class="iof-dt-btn active"
+                                onclick="IOF.setDeliveryType('home')">
+                            <i class="fas fa-home"></i> توصيل للمنزل
+                        </button>
+                        <button type="button" id="iof_dt_desk" class="iof-dt-btn"
+                                onclick="IOF.setDeliveryType('desk')">
+                            <i class="fas fa-store"></i> سحب من المكتب
+                        </button>
                     </div>
                     <div class="iof-qty-row">
                         <span style="font-size:.9rem;color:var(--text-muted,#888);">الكمية:</span>

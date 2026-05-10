@@ -1,8 +1,9 @@
 /* Inline order form on product detail page */
 window.IOF = (() => {
-    let _product  = null;
-    let _qty      = 1;
-    let _promo    = null; // { code, type, value, discount, label }
+    let _product      = null;
+    let _qty          = 1;
+    let _promo        = null; // { code, type, value, discount, label }
+    let _deliveryType = 'home'; // 'home' | 'desk'
 
     function el(id) { return document.getElementById(id); }
     function fmt(n) { return Number(n).toLocaleString('en-US'); }
@@ -10,7 +11,14 @@ window.IOF = (() => {
     function getWilayas() { return (CONFIG && CONFIG.wilayas) ? CONFIG.wilayas : []; }
     function getShipping(code) {
         const w = getWilayas().find(w => w.code === code);
-        return w ? w.home : null;
+        return w ? (w[_deliveryType] ?? w.home) : null;
+    }
+
+    function setDeliveryType(type) {
+        _deliveryType = type;
+        el('iof_dt_home')?.classList.toggle('active', type === 'home');
+        el('iof_dt_desk')?.classList.toggle('active', type === 'desk');
+        updateSummary();
     }
 
     function updateSummary() {
@@ -170,6 +178,7 @@ window.IOF = (() => {
                 phone,
                 wilaya:        wilaya?.name || '',
                 wilaya_code:   String(wilayaCode),
+                delivery_type: _deliveryType,
                 shipping_price: shipping,
                 promo_code:    _promo ? _promo.code : null,
                 items: [{
@@ -220,12 +229,13 @@ window.IOF = (() => {
     }
 
     function init(product) {
-        _product = product;
-        _qty     = 1;
-        _promo   = null;
+        _product      = product;
+        _qty          = 1;
+        _promo        = null;
+        _deliveryType = 'home';
         clearMsg();
         updateSummary();
     }
 
-    return { init, plus: () => setQty(_qty + 1), minus: () => setQty(_qty - 1), updateSummary, applyPromo, submit };
+    return { init, plus: () => setQty(_qty + 1), minus: () => setQty(_qty - 1), updateSummary, applyPromo, submit, setDeliveryType };
 })();
