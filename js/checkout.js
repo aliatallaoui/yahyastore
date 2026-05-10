@@ -1,6 +1,7 @@
 window.Checkout = (() => {
     let _cart        = null;
     let _submitting  = false;
+    let _promo       = null; // { code, type, value, discount, label }
 
     const el = id => document.getElementById(id);
 
@@ -19,7 +20,8 @@ window.Checkout = (() => {
         const subtotal   = _cart.subtotal;
         const wilayaCode = el('checkoutWilaya')?.value;
         const shipping   = calcShipping(wilayaCode);
-        const total      = subtotal + shipping;
+        const discount   = _promo ? _promo.discount : 0;
+        const total      = Math.max(0, subtotal - discount) + shipping;
 
         const itemsHtml = _cart.items.map(item => `
             <div class="order-item">
@@ -36,12 +38,56 @@ window.Checkout = (() => {
         set('checkoutShipping',  shipping > 0 ? shipping.toLocaleString('en-US') + ' DZD' : 'اختر الولاية');
         set('checkoutGrandTotal', total.toLocaleString('en-US') + ' DZD');
 
+        // Discount row visibility
+        const discRow = el('checkoutDiscountRow');
+        if (discRow) {
+            if (_promo && discount > 0) {
+                discRow.style.display = 'flex';
+                const lbl = el('checkoutDiscountLabel');
+                const val = el('checkoutDiscountVal');
+                if (lbl) lbl.textContent = _promo.label;
+                if (val) val.textContent = '−' + discount.toLocaleString('en-US') + ' DZD';
+            } else {
+                discRow.style.display = 'none';
+            }
+        }
+
         setHtml('confirmationOrderItems', itemsHtml);
         set('confirmationSubtotal',   subtotal.toLocaleString('en-US') + ' DZD');
         set('confirmationShipping',   shipping.toLocaleString('en-US') + ' DZD');
         set('confirmationGrandTotal', total.toLocaleString('en-US') + ' DZD');
 
-        return { subtotal, shipping, total };
+        return { subtotal, shipping, discount, total };
+    }
+
+    async function applyPromo() {
+        const codeEl = el('checkoutPromoCode');
+        const msgEl  = el('checkoutPromoMsg');
+        if (!codeEl) return;
+        const code = codeEl.value.trim().toUpperCase();
+        if (!code) return;
+
+        if (msgEl) { msgEl.textContent = '...'; msgEl.style.color = 'var(--text-muted)'; msgEl.style.display = 'block'; }
+
+        try {
+            const res  = await fetch(CONFIG.apiUrl + '/promo/check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-API-Key': CONFIG.apiKey },
+                body: JSON.stringify({ code, order_total: _cart.subtotal }),
+            });
+            const data = await res.json();
+            if (data.valid) {
+                _promo = { code, type: data.type, value: data.value, discount: data.discount, label: data.label };
+                if (msgEl) { msgEl.textContent = '✓ ' + data.label; msgEl.style.color = '#22c55e'; }
+            } else {
+                _promo = null;
+                if (msgEl) { msgEl.textContent = '✗ ' + (data.message || 'كود غير صالح'); msgEl.style.color = '#e74c3c'; }
+            }
+        } catch {
+            _promo = null;
+            if (msgEl) { msgEl.textContent = 'تعذر التحقق'; msgEl.style.color = '#e74c3c'; }
+        }
+        updateSummary();
     }
 
     function saveCart(phone) {
@@ -91,6 +137,11 @@ window.Checkout = (() => {
         el('checkoutModal')?.classList.remove('active');
         document.body.style.overflow = '';
         el('checkoutForm')?.reset();
+        _promo = null;
+        const discRow = el('checkoutDiscountRow');
+        if (discRow) discRow.style.display = 'none';
+        const msgEl = el('checkoutPromoMsg');
+        if (msgEl) { msgEl.textContent = ''; msgEl.style.display = 'none'; }
         clearErrors();
     }
 
@@ -175,6 +226,7 @@ window.Checkout = (() => {
             delivery_type: el('checkoutDeliveryType')?.value       || null,
             notes:         el('checkoutNotes')?.value.trim()       || null,
             shipping_price: totals.shipping,
+            promo_code:    _promo ? _promo.code : null,
             items:         _cart.toApiItems(),
         };
 
@@ -254,8 +306,22 @@ window.Checkout = (() => {
                             <h3>ملخص الطلب</h3>
                             <div class="order-items" id="checkoutOrderItems"></div>
                             <div class="summary-row"><span>المجموع الفرعي:</span><span id="checkoutSubtotal">0 DZD</span></div>
+                            <div class="summary-row" id="checkoutDiscountRow" style="display:none;color:#22c55e;">
+                                <span id="checkoutDiscountLabel">خصم</span>
+                                <span id="checkoutDiscountVal">—</span>
+                            </div>
                             <div class="summary-row"><span>الشحن:</span><span id="checkoutShipping">0 DZD</span></div>
                             <div class="summary-row total"><span>الإجمالي:</span><span id="checkoutGrandTotal">0 DZD</span></div>
+                            <div style="display:flex;gap:8px;margin-top:12px;">
+                                <input type="text" id="checkoutPromoCode" placeholder="كود الخصم (اختياري)"
+                                       style="flex:1;padding:9px 12px;border-radius:9px;border:1px solid var(--border,#333);background:var(--bg,#111);color:var(--text,#fff);font-family:monospace;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;"
+                                       onkeydown="if(event.key==='Enter'){event.preventDefault();Checkout._applyPromo();}">
+                                <button type="button" onclick="Checkout._applyPromo()"
+                                        style="padding:9px 14px;border-radius:9px;border:1px solid var(--gold,#c8a656);background:transparent;color:var(--gold,#c8a656);font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap;font-family:inherit;">
+                                    تطبيق
+                                </button>
+                            </div>
+                            <div id="checkoutPromoMsg" style="display:none;font-size:.8rem;font-weight:600;margin-top:5px;padding-right:2px;"></div>
                         </div>
                         <form id="checkoutForm" class="checkout-form">
                             <div class="form-group">
@@ -362,5 +428,5 @@ window.Checkout = (() => {
         });
     }
 
-    return { init, open, close };
+    return { init, open, close, _applyPromo: applyPromo };
 })();

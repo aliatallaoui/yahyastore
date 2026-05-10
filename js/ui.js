@@ -524,6 +524,54 @@ window.UI = (() => {
         initCategoryCards();
     }
 
+    function initSearch() {
+        const modal    = document.getElementById('searchModal');
+        const input    = document.getElementById('searchInput');
+        const results  = document.getElementById('searchResults');
+        const closeBtn = document.getElementById('closeSearch');
+
+        function openSearch() {
+            modal?.classList.add('active');
+            setTimeout(() => input?.focus(), 80);
+        }
+        function closeSearch() {
+            modal?.classList.remove('active');
+            if (input)   input.value   = '';
+            if (results) results.innerHTML = '';
+        }
+
+        document.querySelectorAll('.search-btn').forEach(btn => btn.addEventListener('click', openSearch));
+        closeBtn?.addEventListener('click', closeSearch);
+        modal?.addEventListener('click', e => { if (e.target === modal) closeSearch(); });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && modal?.classList.contains('active')) closeSearch();
+        });
+
+        input?.addEventListener('input', () => {
+            const q = input.value.trim().toLowerCase();
+            if (!results) return;
+            if (!q) { results.innerHTML = ''; return; }
+
+            const all = (window.Products?.getAll ? Products.getAll() : [])
+                .filter(p => p.name?.toLowerCase().includes(q) || (p.short_description || p.description || '').toLowerCase().includes(q))
+                .slice(0, 8);
+
+            if (!all.length) {
+                results.innerHTML = `<p style="text-align:center;color:var(--text-muted);padding:20px;">لا توجد نتائج لـ "${input.value}"</p>`;
+                return;
+            }
+
+            results.innerHTML = all.map(p => `
+<a href="#product/${p.slug || p.id}" class="search-result-item" onclick="document.getElementById('closeSearch').click()">
+    <img src="${p.image || ''}" alt="" style="width:48px;height:40px;object-fit:cover;border-radius:6px;flex-shrink:0;">
+    <div style="flex:1;min-width:0;">
+        <div style="font-weight:700;font-size:.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.name}</div>
+        <div style="font-size:.8rem;color:var(--gold);">${Number(p.price).toLocaleString('en-US')} DZD</div>
+    </div>
+</a>`).join('');
+        });
+    }
+
     function init() {
         injectSharedDOM();
         initMobileMenu();
@@ -532,6 +580,7 @@ window.UI = (() => {
         initBackToTop();
         initNewsletter();
         initAnnouncementBar();
+        initSearch();
     }
 
     return { init, reinit, toast };

@@ -3763,3 +3763,17 @@ select.form-control option { background: #1c1a17; color: var(--text); }
     transition: background .15s;
 }
 .iof-promo-btn:hover { background: rgba(200,166,86,.1); }
+
+/* Search result items */
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 9px;
+    text-decoration: none;
+    color: var(--text, #e8e0c8);
+    transition: background .15s;
+    cursor: pointer;
+}
+.search-result-item:hover { background: rgba(200,166,86,.08); }
