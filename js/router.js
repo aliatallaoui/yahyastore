@@ -1,5 +1,5 @@
 window.Router = (() => {
-    const PAGE_ROUTES = new Set(['home', 'products', 'faq', 'privacy', 'shipping', 'reviews']);
+    const PAGE_ROUTES = new Set(['home', 'products', 'faq', 'privacy', 'shipping', 'reviews', 'track']);
 
     const PAGE_TITLES = {
         home:     'ورشة يحيى للموس البوسعادي — صناعة يدوية 100%',
@@ -8,6 +8,7 @@ window.Router = (() => {
         faq:      'الأسئلة الشائعة | ورشة يحيى',
         privacy:  'سياسة الخصوصية | ورشة يحيى',
         shipping: 'الشحن والتوصيل | ورشة يحيى',
+        track:    'تتبع طلبك | ورشة يحيى',
     };
 
     let _current = null;

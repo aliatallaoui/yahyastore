@@ -904,7 +904,37 @@ ${trustBarHTML()}
 </section>`;
     }
 
-    return { home, products, faq, privacy, shipping, productDetail, reviews };
+    /* ── ORDER TRACKING ────────────────────────────────────────── */
+    function track() {
+        return `
+<section class="section" style="padding-top:48px;min-height:60vh;">
+    <div class="container" style="max-width:560px;">
+        <div style="text-align:center;margin-bottom:32px;">
+            <div style="font-size:2.4rem;margin-bottom:10px;">📦</div>
+            <h1 style="font-size:1.6rem;margin-bottom:8px;">تتبع طلبك</h1>
+            <p style="color:var(--text-muted,#888);font-size:.95rem;">أدخل رقم هاتفك لعرض جميع طلباتك وحالتها</p>
+        </div>
+
+        <div class="card" style="padding:28px 24px;margin-bottom:24px;">
+            <div style="display:flex;gap:10px;">
+                <input type="tel" id="trackPhone" placeholder="05xxxxxxxx"
+                       inputmode="numeric" maxlength="10"
+                       style="flex:1;direction:ltr;text-align:center;font-size:1.1rem;letter-spacing:.08em;padding:12px 16px;border-radius:var(--radius,10px);border:1px solid var(--border,#333);background:var(--bg-card,#1a1a14);color:var(--text,#fff);"
+                       onkeydown="if(event.key==='Enter') TrackPage.search()">
+                <button onclick="TrackPage.search()"
+                        style="padding:12px 22px;border-radius:var(--radius,10px);background:var(--gold,#c8a656);color:#111;border:none;font-weight:700;font-size:.95rem;cursor:pointer;white-space:nowrap;">
+                    <i class="fas fa-search"></i> بحث
+                </button>
+            </div>
+            <div id="trackError" style="display:none;color:#e05;font-size:.85rem;margin-top:10px;text-align:center;"></div>
+        </div>
+
+        <div id="trackResults"></div>
+    </div>
+</section>`;
+    }
+
+    return { home, products, faq, privacy, shipping, productDetail, reviews, track };
 })();
 
 /* Review Video Player — swaps thumb for real <video> on click */
