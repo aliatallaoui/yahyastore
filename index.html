@@ -16,14 +16,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ورشة يحيى">
-    <link rel="canonical" href="https://yahyastore.dz/">
+    <link rel="canonical" href="https://yahyablade.com/">
 
     <!-- ═══ Open Graph (Facebook / WhatsApp / LinkedIn) ══════════ -->
     <meta property="og:type"         content="website">
-    <meta property="og:url"          content="https://yahyastore.dz/">
+    <meta property="og:url"          content="https://yahyablade.com/">
     <meta property="og:title"        content="ورشة يحيى | موس بوسعادي أصيل — صناعة يدوية 100%">
     <meta property="og:description"  content="موس بوسعادي أصيل بصناعة يدوية 100%. الدفع عند الاستلام، توصيل سريع لجميع ولايات الجزائر. اطلب الآن!">
-    <meta property="og:image"        content="https://yahyastore.dz/images/og-cover.jpg">
+    <meta property="og:image"        content="https://yahyablade.com/images/og-cover.jpg">
     <meta property="og:image:alt"    content="موس بوسعادي أصيل — ورشة يحيى">
     <meta property="og:image:width"  content="1200">
     <meta property="og:image:height" content="630">
@@ -35,7 +35,7 @@
     <meta name="twitter:site"        content="@yahyastore_dz">
     <meta name="twitter:title"       content="ورشة يحيى | موس بوسعادي أصيل — صناعة يدوية 100%">
     <meta name="twitter:description" content="موس بوسعادي أصيل بصناعة يدوية 100%. الدفع عند الاستلام، توصيل سريع لجميع ولايات الجزائر.">
-    <meta name="twitter:image"       content="https://yahyastore.dz/images/og-cover.jpg">
+    <meta name="twitter:image"       content="https://yahyablade.com/images/og-cover.jpg">
     <meta name="twitter:image:alt"   content="موس بوسعادي أصيل — ورشة يحيى">
 
     <!-- ═══ Geo / Business ════════════════════════════════════════ -->
@@ -54,9 +54,9 @@
       "@type": "OnlineStore",
       "name": "ورشة يحيى",
       "alternateName": "Yahya Store",
-      "url": "https://yahyastore.dz",
-      "logo": "https://yahyastore.dz/images/logo.png",
-      "image": "https://yahyastore.dz/images/og-cover.jpg",
+      "url": "https://yahyablade.com",
+      "logo": "https://yahyablade.com/images/logo.png",
+      "image": "https://yahyablade.com/images/og-cover.jpg",
       "description": "متجر إلكتروني جزائري متخصص في بيع موس بوسعادي الأصيل بصناعة يدوية 100% مع الدفع عند الاستلام.",
       "telephone": "+213775108618",
       "priceRange": "$$",
@@ -96,7 +96,6 @@
 
     <!-- ═══ API config ════════════════════════════════════════════ -->
     <meta name="api-url" content="/api">
-    <meta name="api-key" content="f99c4435c23a220b7789680ff0a65a723059ab082920c6e66e8ef49335b4deee">
 
     <!-- ═══ Favicon ══════════════════════════════════════════════ -->
     <link rel="icon"             href="images/favicon.svg" type="image/svg+xml">
@@ -124,6 +123,13 @@
     'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '761582631747134');
     fbq('track', 'PageView');
+    window.FBQ = function(event, params, dedupKey) {
+        try {
+            dedupKey
+                ? fbq('track', event, params || {}, { eventID: String(dedupKey) })
+                : fbq('track', event, params || {});
+        } catch(e) {}
+    };
     </script>
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=761582631747134&ev=PageView&noscript=1"

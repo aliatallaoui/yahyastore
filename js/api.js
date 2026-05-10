@@ -13,7 +13,6 @@ window.API = {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept':       'application/json',
-                'X-API-Key':    CONFIG.apiKey,
             },
             body: JSON.stringify(payload),
         });

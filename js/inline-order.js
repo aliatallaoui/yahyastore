@@ -1,9 +1,11 @@
 /* Inline order form on product detail page */
 window.IOF = (() => {
-    let _product      = null;
-    let _qty          = 1;
-    let _promo        = null; // { code, type, value, discount, label }
-    let _deliveryType = 'home'; // 'home' | 'desk'
+    let _product          = null;
+    let _qty              = 1;
+    let _promo            = null;
+    let _deliveryType     = 'home';
+    let _lastOrderNumber  = '';
+    let _lastPhone        = '';
 
     function el(id) { return document.getElementById(id); }
     function fmt(n) { return Number(n).toLocaleString('en-US'); }
@@ -92,7 +94,7 @@ window.IOF = (() => {
             const subtotal = _product.price * _qty;
             const res = await fetch(CONFIG.apiUrl + '/promo/check', {
                 method:  'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-API-Key': CONFIG.apiKey },
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body:    JSON.stringify({ code, order_total: subtotal }),
             });
             const data = await res.json();
@@ -191,19 +193,29 @@ window.IOF = (() => {
 
             const res  = await fetch(CONFIG.apiUrl + '/orders', {
                 method:  'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-API-Key': CONFIG.apiKey },
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body:    JSON.stringify(body),
             });
             const data = await res.json();
             if (!res.ok || !data.success) throw new Error(data.message || 'server');
 
-            if (window.Analytics) Analytics.track('checkout_start', {
+            const orderNumber = data.data?.order_number || '';
+            const subtotal    = _product.price * _qty;
+            const discount    = _promo ? _promo.discount : 0;
+            const total       = Math.max(0, subtotal - discount) + shipping;
+
+            if (window.FBQ) FBQ('Purchase', {
+                value:        total,
+                currency:     'DZD',
+                content_ids:  [String(_product.id)],
+                content_type: 'product',
+            }, orderNumber);
+            if (window.Analytics) Analytics.track('purchase', {
                 page:         '#product/' + (_product.slug || _product.id),
                 product_id:   String(_product.id),
                 product_name: _product.name,
+                total,
             });
-
-            const orderNumber = data.data?.order_number || '';
             const formEl = el('iof_form');
             if (formEl) {
                 _showSuccess(formEl, orderNumber, phone);
@@ -219,6 +231,9 @@ window.IOF = (() => {
     }
 
     function _showSuccess(formEl, orderNumber, phone) {
+        _lastOrderNumber = orderNumber;
+        _lastPhone       = phone;
+
         const upsell    = window.BRAND?.upsell;
         const isUpsell  = upsell && Number(upsell.id) !== Number(_product?.id);
 
@@ -250,7 +265,7 @@ window.IOF = (() => {
         رقم الطلب: <strong style="color:var(--text,#fff);font-family:monospace;" id="iof_order_number">${orderNumber}</strong>
     </p>
     <p style="color:var(--text-muted,#999);font-size:.82rem;margin-bottom:${isUpsell ? '0' : '20px'};">سيتصل بك فريقنا لتأكيد طلبك قريباً</p>
-    ${!isUpsell ? `<a href="#track" style="font-size:.83rem;color:var(--gold,#c8a656);text-decoration:underline;"><i class="fas fa-search"></i> تتبع طلبك</a>` : ''}
+    ${!isUpsell ? `<a href="#track" onclick="sessionStorage.setItem('tpf',JSON.stringify({o:'${orderNumber}',p:'${phone}'}))" style="font-size:.83rem;color:var(--gold,#c8a656);text-decoration:underline;"><i class="fas fa-search"></i> تتبع طلبك</a>` : ''}
 </div>
 ${upsellHTML}`;
 
@@ -271,7 +286,7 @@ ${upsellHTML}`;
         try {
             const res  = await fetch(CONFIG.apiUrl + '/orders/upsell', {
                 method:  'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-API-Key': CONFIG.apiKey },
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body:    JSON.stringify({
                     order_number:  orderNumber,
                     phone,
@@ -295,7 +310,7 @@ ${upsellHTML}`;
         الإجمالي الجديد: <strong style="color:var(--gold,#c8a656);">${fmt(data.new_total)} DZD</strong>
     </div>
     <div style="color:var(--text-muted,#999);font-size:.78rem;">المبرد مضاف لطلبك — التوصيل مجاني</div>
-    <a href="#track" style="display:inline-block;margin-top:14px;font-size:.82rem;color:var(--gold,#c8a656);text-decoration:underline;">
+    <a href="#track" onclick="sessionStorage.setItem('tpf',JSON.stringify({o:'${orderNumber}',p:'${phone}'}))" style="display:inline-block;margin-top:14px;font-size:.82rem;color:var(--gold,#c8a656);text-decoration:underline;">
         <i class="fas fa-search"></i> تتبع طلبك
     </a>
 </div>`;
@@ -317,7 +332,7 @@ ${upsellHTML}`;
             upsellEl.style.animation = 'iof-fade-out .25s ease forwards';
             setTimeout(() => {
                 upsellEl.innerHTML = `<div style="text-align:center;padding:12px;font-size:.8rem;color:var(--text-muted,#888);">
-                    <a href="#track" style="color:var(--gold,#c8a656);text-decoration:underline;"><i class="fas fa-search"></i> تتبع طلبك</a>
+                    <a href="#track" onclick="sessionStorage.setItem('tpf',JSON.stringify({o:'${_lastOrderNumber}',p:'${_lastPhone}'}))" style="color:var(--gold,#c8a656);text-decoration:underline;"><i class="fas fa-search"></i> تتبع طلبك</a>
                 </div>`;
                 upsellEl.style.animation = '';
             }, 260);

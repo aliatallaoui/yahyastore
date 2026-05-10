@@ -72,7 +72,7 @@ window.Checkout = (() => {
         try {
             const res  = await fetch(CONFIG.apiUrl + '/promo/check', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-API-Key': CONFIG.apiKey },
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify({ code, order_total: _cart.subtotal }),
             });
             const data = await res.json();
@@ -125,7 +125,7 @@ window.Checkout = (() => {
         updateSummary();
         if (window.FBQ) FBQ('InitiateCheckout', {
             value: _cart.subtotal,
-            currency: 'USD',
+            currency: 'DZD',
             num_items: _cart.count,
         });
         if (window.Analytics) Analytics.track('checkout_start');
@@ -258,10 +258,9 @@ window.Checkout = (() => {
 
             if (window.FBQ) FBQ('Purchase', {
                 value: totals.total,
-                currency: 'USD',
+                currency: 'DZD',
                 content_ids: _cart.items.map(i => String(i.id)),
                 content_type: 'product',
-                order_id: orderData.order_number,
             }, orderData.order_number);
             _cart.clear();
         } catch (err) {

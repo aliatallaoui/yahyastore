@@ -72,13 +72,19 @@ window.TrackPage = (() => {
     }
 
     async function search() {
-        const phoneEl = document.getElementById('trackPhone');
-        const resultsEl = document.getElementById('trackResults');
-        if (!phoneEl) return;
+        const phoneEl    = document.getElementById('trackPhone');
+        const orderNumEl = document.getElementById('trackOrderNum');
+        const resultsEl  = document.getElementById('trackResults');
+        if (!phoneEl || !orderNumEl) return;
 
-        const phone = phoneEl.value.trim();
+        const phone    = phoneEl.value.trim();
+        const orderNum = orderNumEl.value.trim().toUpperCase();
         hideError();
 
+        if (!orderNum) {
+            showError('أدخل رقم الطلب (يجده في رسالة التأكيد)');
+            return;
+        }
         if (!/^(05|06|07)\d{8}$/.test(phone)) {
             showError('أدخل رقم هاتف جزائري صحيح (10 أرقام يبدأ بـ 05/06/07)');
             return;
@@ -92,9 +98,11 @@ window.TrackPage = (() => {
         }
 
         try {
-            const res = await fetch(`${CONFIG.apiUrl}/orders/track?phone=${encodeURIComponent(phone)}`, {
-                headers: { 'Accept': 'application/json', 'X-API-Key': CONFIG.apiKey },
+            const params = new URLSearchParams({ phone, order_number: orderNum });
+            const res = await fetch(`${CONFIG.apiUrl}/orders/track?${params}`, {
+                headers: { 'Accept': 'application/json' },
             });
+            if (res.status === 429) { showError('محاولات كثيرة جداً، حاول بعد دقيقة'); if (resultsEl) resultsEl.innerHTML = ''; return; }
             if (!res.ok) throw new Error('server');
             const data = await res.json();
             renderOrders(data.orders || []);
@@ -104,5 +112,19 @@ window.TrackPage = (() => {
         }
     }
 
-    return { search };
+    function init() {
+        try {
+            const raw = sessionStorage.getItem('tpf');
+            if (!raw) return;
+            sessionStorage.removeItem('tpf');
+            const { o, p } = JSON.parse(raw);
+            const orderEl = document.getElementById('trackOrderNum');
+            const phoneEl = document.getElementById('trackPhone');
+            if (orderEl && o) orderEl.value = o;
+            if (phoneEl && p) phoneEl.value = p;
+            if (o && p) search();
+        } catch {}
+    }
+
+    return { search, init };
 })();

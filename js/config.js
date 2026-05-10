@@ -1,12 +1,8 @@
-// Global configuration.
-// Override apiUrl and apiKey per-page via <meta> tags (no JS editing needed):
-//   <meta name="api-url" content="https://api.yahyaartisan.shop/api">
-//   <meta name="api-key" content="YOUR_KEY_HERE">
+// Global configuration — override apiUrl via <meta name="api-url"> tag.
 const _metaContent = name => document.querySelector(`meta[name="${name}"]`)?.content || '';
 
 window.CONFIG = {
     apiUrl:   _metaContent('api-url')  || 'http://localhost:8001/api',
-    apiKey:   _metaContent('api-key')  || 'f99c4435c23a220b7789680ff0a65a723059ab082920c6e66e8ef49335b4deee',
     waNumber: _metaContent('wa-number')|| '213775108618',
 
     wilayas: [
