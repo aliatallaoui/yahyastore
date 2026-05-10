@@ -748,16 +748,21 @@ ${trustBarHTML()}
                  data-category-label="${esc(p.category_label||catLabels[p.category]||p.category||'')}"
                  data-old-price="${p.old_price||''}" data-discount="${p.discount||0}">
                 <div class="product-image">
-                    ${p.badge ? `<span class="product-badge">${esc(String(p.badge))}</span>` : ''}
-                    <img src="${esc(p.image||'')}" alt="${esc(p.name)}" loading="lazy">
+                    ${p.in_stock === false
+                        ? `<span class="product-badge" style="background:#c0392b;">نفد المخزون</span>`
+                        : (p.badge ? `<span class="product-badge">${esc(String(p.badge))}</span>` : '')}
+                    <img src="${esc(p.image||'')}" alt="${esc(p.name)}" loading="lazy"
+                         style="${p.in_stock === false ? 'opacity:.55;filter:grayscale(.4)' : ''}">
                     <a class="product-quick-view-hint" href="#product/${p.slug || p.id}"><i class="fas fa-eye"></i> عرض التفاصيل</a>
                 </div>
                 <div class="product-info">
                     <h3 class="product-title">${esc(p.name)}</h3>
                     <div class="product-footer">
                         <span class="product-price">${Number(p.price).toLocaleString('en-US')} DZD</span>
-                        <button class="btn btn-primary btn-sm btn-ripple add-to-cart"
-                                data-id="${p.id}" data-name="${esc(p.name)}" data-price="${p.price}">أضف للسلة</button>
+                        ${p.in_stock === false
+                            ? `<span style="font-size:.78rem;font-weight:700;color:#e74c3c;"><i class="fas fa-times-circle"></i> نفد</span>`
+                            : `<button class="btn btn-primary btn-sm btn-ripple add-to-cart"
+                                       data-id="${p.id}" data-name="${esc(p.name)}" data-price="${p.price}">أضف للسلة</button>`}
                     </div>
                 </div>
             </div>`;
@@ -819,6 +824,10 @@ ${trustBarHTML()}
                     <div class="meta-item"><i class="fas fa-phone-alt"></i><span>تأكيد هاتفي قبل الشحن</span></div>
                     <div class="meta-item"><i class="fas fa-shield-alt"></i><span>منتج مختار بعناية — جودة مضمونة</span></div>
                 </div>
+                ${product.in_stock === false ? `
+                <div style="margin-top:16px;padding:14px 20px;border-radius:10px;background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.3);color:#e74c3c;font-weight:700;font-size:.95rem;text-align:center;">
+                    <i class="fas fa-times-circle"></i> هذا المنتج غير متوفر حالياً
+                </div>` : `
                 <div class="product-detail-actions">
                     <div class="qty-selector" role="group" aria-label="الكمية">
                         <button class="qty-btn" id="qtyMinus" aria-label="إنقاص">−</button>
@@ -829,7 +838,7 @@ ${trustBarHTML()}
                             data-id="${product.id}" data-name="${esc(product.name)}" data-price="${product.price}">
                         <i class="fas fa-cart-plus"></i> أضف للسلة
                     </button>
-                </div>
+                </div>`}
                 <a href="${waProductUrl}" target="_blank" class="btn btn-whatsapp btn-block btn-ripple">
                     <i class="fab fa-whatsapp"></i> اطلب مباشرة عبر واتساب
                 </a>

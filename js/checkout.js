@@ -44,6 +44,24 @@ window.Checkout = (() => {
         return { subtotal, shipping, total };
     }
 
+    function saveCart(phone) {
+        try {
+            const sid = sessionStorage.getItem('yhy_sid') || '';
+            if (!sid || !_cart || _cart.isEmpty) return;
+            fetch(CONFIG.apiUrl + '/carts/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    session_id: sid,
+                    phone: phone || null,
+                    items: _cart.toApiItems(),
+                    total: _cart.subtotal,
+                }),
+                keepalive: true,
+            }).catch(() => {});
+        } catch(e) {}
+    }
+
     function open() {
         if (_cart.isEmpty) {
             UI.toast('سلة التسوق فارغة!', 'error');
@@ -65,6 +83,7 @@ window.Checkout = (() => {
             num_items: _cart.count,
         });
         if (window.Analytics) Analytics.track('checkout_start');
+        saveCart(null);
     }
 
     function close() {
@@ -331,6 +350,12 @@ window.Checkout = (() => {
         el('checkoutOverlay')?.addEventListener('click', close);
         el('backToShopBtn')?.addEventListener('click', close);
         el('checkoutForm')?.addEventListener('submit', handleSubmit);
+
+        // Update abandoned cart record when phone is entered
+        el('checkoutPhone')?.addEventListener('change', function() {
+            const phone = this.value.trim();
+            if (/^(05|06|07)\d{8}$/.test(phone)) saveCart(phone);
+        });
 
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape' && el('checkoutModal')?.classList.contains('active')) close();
