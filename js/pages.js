@@ -178,12 +178,8 @@ ${trustBarHTML()}
         ${reviewVideos.length ? `
         <div style="display:flex;flex-direction:column;align-items:center;gap:24px;">
             <div class="review-video-card fade-in" style="max-width:320px;width:100%;">
-                <div class="review-video-wrap">
-                    <video playsinline preload="metadata" class="review-video"
-                           onplay="this.setAttribute('controls','');this.closest('.review-video-wrap').classList.add('playing')">
-                        <source src="${esc(reviewVideos[0].src)}" type="video/mp4">
-                    </video>
-                    <div class="video-play-overlay" onclick="this.previousElementSibling.play()">
+                <div class="review-video-wrap" data-src="${esc(reviewVideos[0].src)}" onclick="RVP.play(this)">
+                    <div class="review-video-thumb">
                         <div class="vpo-btn"><i class="fas fa-play"></i></div>
                     </div>
                 </div>
@@ -767,12 +763,8 @@ ${trustBarHTML()}
         <div class="review-video-grid" id="reviewsGrid">
             ${vids.map((v, i) => `
             <div class="review-video-card fade-in" style="animation-delay:${i * 0.05}s">
-                <div class="review-video-wrap">
-                    <video playsinline preload="none" class="review-video"
-                           onplay="this.setAttribute('controls','');this.closest('.review-video-wrap').classList.add('playing')">
-                        <source src="${esc(v.src)}" type="video/mp4">
-                    </video>
-                    <div class="video-play-overlay" onclick="this.previousElementSibling.play()">
+                <div class="review-video-wrap" data-src="${esc(v.src)}" onclick="RVP.play(this)">
+                    <div class="review-video-thumb">
                         <div class="vpo-btn"><i class="fas fa-play"></i></div>
                     </div>
                 </div>
@@ -794,3 +786,19 @@ ${trustBarHTML()}
 
     return { home, products, faq, privacy, shipping, productDetail, reviews };
 })();
+
+/* Review Video Player — swaps thumb for real <video> on click */
+window.RVP = {
+    play(wrap) {
+        const src = wrap.dataset.src;
+        if (!src) return;
+        const video = document.createElement('video');
+        video.controls = true;
+        video.playsinline = true;
+        video.autoplay = true;
+        video.className = 'review-video';
+        video.innerHTML = `<source src="${src}" type="video/mp4">`;
+        wrap.replaceWith(video);
+        video.play().catch(() => {});
+    }
+};
