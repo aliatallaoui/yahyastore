@@ -3263,10 +3263,16 @@ select.form-control option { background: #1c1a17; color: var(--text); }
     .product-detail { padding: 28px 0 60px; }
     .product-detail-title { font-size: 1.3rem; }
     .detail-price { font-size: 1.5rem; }
-    .detail-sticky-bar { display: flex; }
     .product-gallery-thumbs { overflow-x: auto; flex-wrap: nowrap;
                                -webkit-overflow-scrolling: touch; padding-bottom: 4px; gap: 8px; }
     .thumb { flex-shrink: 0; }
+
+    /* Inline order form — mobile layout */
+    .inline-order-box { padding: 16px; margin-top: 16px; }
+    .iof-row { flex-direction: column; gap: 8px; }
+    .iof-row input, .iof-row select { min-width: unset !important; width: 100%; }
+    .iof-promo-row { gap: 6px; }
+    .iof-promo-btn { padding: 9px 12px; font-size: .8rem; }
 
     /* Trust bar */
     .trust-bar-grid { grid-template-columns: 1fr 1fr; }

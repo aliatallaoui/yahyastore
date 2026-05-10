@@ -901,18 +901,7 @@ ${trustBarHTML()}
 
 ${relatedSection}
 
-<div class="detail-sticky-bar" id="detailStickyBar">
-    <span class="detail-sticky-price">${Number(product.price).toLocaleString('en-US')} DZD</span>
-    <button class="btn btn-primary btn-ripple add-to-cart-detail"
-            data-id="${product.id}" data-name="${esc(product.name)}" data-price="${product.price}"
-            style="flex:1;">
-        <i class="fas fa-cart-plus"></i> أضف للسلة
-    </button>
-    <a href="${waProductUrl}" target="_blank" class="btn btn-whatsapp"
-       style="width:48px;padding:0;aspect-ratio:1;flex-shrink:0;" aria-label="واتساب">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-</div>`;
+`;
     }
 
     /* ── REVIEWS PAGE ─────────────────────────────────────────── */
