@@ -339,7 +339,15 @@
         if (el('footerDesc')  && B.tagline)   el('footerDesc').textContent  = B.tagline;
         if (el('footerWhyUs') && name)        el('footerWhyUs').textContent = 'لماذا ' + name + '؟';
         if (el('footerCopy'))                 el('footerCopy').innerHTML    = '&copy; ' + new Date().getFullYear() + ' ' + name + ' — جميع الحقوق محفوظة';
+        if (el('waFloatBtn'))                 el('waFloatBtn').href         = waUrl;
     })();
     </script>
+
+    <!-- Floating WhatsApp chat button -->
+    <a id="waFloatBtn" href="#" target="_blank" rel="noopener noreferrer"
+       class="wa-float-btn" aria-label="تواصل معنا على واتساب">
+        <i class="fab fa-whatsapp"></i>
+        <span class="wa-float-tooltip">تواصل معنا</span>
+    </a>
 </body>
 </html>
