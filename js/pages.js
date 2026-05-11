@@ -847,6 +847,40 @@ ${trustBarHTML()}
                             <i class="fas fa-store"></i> سحب من المكتب
                         </button>
                     </div>
+
+                    <!-- ── Engraving option ───────────────────────── -->
+                    <div id="iof_eng_toggle" style="margin-top:8px;">
+                        <button type="button" onclick="IOF.setEngraving(true)"
+                                style="width:100%;padding:10px 14px;border-radius:9px;
+                                       border:1px dashed rgba(200,166,86,.4);background:transparent;
+                                       color:var(--text,#e8e0d0);font-size:.85rem;font-weight:600;
+                                       cursor:pointer;text-align:right;font-family:inherit;transition:.2s;">
+                            ✏️ أريد كتابة على الموس
+                            <span style="color:var(--gold,#c8a656);font-size:.8rem;">&nbsp;(+2,000 DZD)</span>
+                        </button>
+                    </div>
+                    <div id="iof_eng_box" style="display:none;margin-top:8px;">
+                        <div style="background:rgba(200,166,86,.07);border:1px solid rgba(200,166,86,.3);border-radius:10px;padding:12px 14px;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                                <span style="font-size:.85rem;font-weight:700;color:var(--gold,#c8a656);">
+                                    ✏️ كتابة على الموس
+                                </span>
+                                <button type="button" onclick="IOF.setEngraving(false)"
+                                        style="background:none;border:none;color:var(--text-muted,#888);cursor:pointer;font-size:1.1rem;line-height:1;padding:0 4px;">✕</button>
+                            </div>
+                            <input type="text" id="iof_eng_text"
+                                   placeholder="ما تريد كتابته على الموس..."
+                                   maxlength="30"
+                                   style="width:100%;padding:9px 12px;border-radius:7px;
+                                          border:1px solid rgba(200,166,86,.3);
+                                          background:rgba(0,0,0,.25);color:var(--text,#e8e0d0);
+                                          font-size:.9rem;font-family:inherit;box-sizing:border-box;">
+                            <div style="font-size:.72rem;color:var(--text-muted,#888);margin-top:5px;">
+                                الحد الأقصى 30 حرفاً — التنفيذ يدوي بالنقش
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="iof-qty-row">
                         <span style="font-size:.9rem;color:var(--text-muted,#888);">الكمية:</span>
                         <div class="iof-qty-ctrl">
@@ -863,6 +897,10 @@ ${trustBarHTML()}
                         <div class="iof-summary-row" id="iof_discount_row" style="display:none;color:#22c55e;">
                             <span id="iof_promo_label">خصم</span>
                             <span id="iof_discount_val">—</span>
+                        </div>
+                        <div class="iof-summary-row" id="iof_eng_row" style="display:none;color:var(--gold,#c8a656);">
+                            <span>✏️ كتابة على الموس</span>
+                            <span>2,000 DZD</span>
                         </div>
                         <div class="iof-summary-row">
                             <span>سعر الشحن</span>

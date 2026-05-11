@@ -17,11 +17,15 @@ window.Checkout = (() => {
     }
 
     function updateSummary() {
-        const subtotal   = _cart.subtotal;
-        const wilayaCode = el('checkoutWilaya')?.value;
-        const shipping   = calcShipping(wilayaCode);
-        const discount   = _promo ? _promo.discount : 0;
-        const total      = Math.max(0, subtotal - discount) + shipping;
+        const subtotal      = _cart.subtotal;
+        const wilayaCode    = el('checkoutWilaya')?.value;
+        const shipping      = calcShipping(wilayaCode);
+        const discount      = _promo ? _promo.discount : 0;
+        const engravingCost = el('checkoutEngraving')?.checked ? 2000 : 0;
+        const total         = Math.max(0, subtotal - discount) + engravingCost + shipping;
+
+        const engRow = el('checkoutEngravingRow');
+        if (engRow) engRow.style.display = engravingCost ? 'flex' : 'none';
 
         const itemsHtml = _cart.items.map(item => `
             <div class="order-item">
@@ -132,6 +136,13 @@ window.Checkout = (() => {
         saveCart(null);
     }
 
+    function toggleEngraving() {
+        const checked = el('checkoutEngraving')?.checked;
+        const box = el('checkoutEngravingBox');
+        if (box) box.style.display = checked ? 'block' : 'none';
+        updateSummary();
+    }
+
     function close() {
         el('checkoutOverlay')?.classList.remove('active');
         el('checkoutModal')?.classList.remove('active');
@@ -140,6 +151,8 @@ window.Checkout = (() => {
         _promo = null;
         const discRow = el('checkoutDiscountRow');
         if (discRow) discRow.style.display = 'none';
+        const engBox = el('checkoutEngravingBox');
+        if (engBox) engBox.style.display = 'none';
         const msgEl = el('checkoutPromoMsg');
         if (msgEl) { msgEl.textContent = ''; msgEl.style.display = 'none'; }
         clearErrors();
@@ -215,6 +228,13 @@ window.Checkout = (() => {
         const wilaya     = getWilayaByCode(wilayaCode);
         const totals     = updateSummary();
 
+        const engravingEnabled = el('checkoutEngraving')?.checked;
+        const engravingText    = el('checkoutEngravingText')?.value.trim() || '';
+        const baseNotes        = el('checkoutNotes')?.value.trim() || '';
+        const notesWithEng     = engravingEnabled
+            ? (baseNotes ? baseNotes + '\n' : '') + '✏️ كتابة على الموس: "' + (engravingText || '—') + '"'
+            : baseNotes || null;
+
         const payload = {
             customer_name: el('checkoutName').value.trim(),
             phone:         el('checkoutPhone').value.trim(),
@@ -224,10 +244,18 @@ window.Checkout = (() => {
             commune:       el('checkoutCommune')?.value.trim()     || null,
             address:       el('checkoutAddress').value.trim(),
             delivery_type: el('checkoutDeliveryType')?.value       || null,
-            notes:         el('checkoutNotes')?.value.trim()       || null,
+            notes:         notesWithEng,
             shipping_price: totals.shipping,
             promo_code:    _promo ? _promo.code : null,
-            items:         _cart.toApiItems(),
+            items: [
+                ..._cart.toApiItems(),
+                ...(engravingEnabled ? [{
+                    product_id:   null,
+                    product_name: 'كتابة على الموس' + (engravingText ? ': ' + engravingText : ''),
+                    unit_price:   2000,
+                    quantity:     1,
+                }] : []),
+            ],
         };
 
         try {
@@ -309,6 +337,10 @@ window.Checkout = (() => {
                                 <span id="checkoutDiscountLabel">خصم</span>
                                 <span id="checkoutDiscountVal">—</span>
                             </div>
+                            <div class="summary-row" id="checkoutEngravingRow" style="display:none;color:var(--gold,#c8a656);">
+                                <span>✏️ كتابة على الموس</span>
+                                <span>2,000 DZD</span>
+                            </div>
                             <div class="summary-row"><span>الشحن:</span><span id="checkoutShipping">0 DZD</span></div>
                             <div class="summary-row total"><span>الإجمالي:</span><span id="checkoutGrandTotal">0 DZD</span></div>
                             <div style="display:flex;gap:8px;margin-top:12px;">
@@ -362,6 +394,29 @@ window.Checkout = (() => {
                             <div class="form-group">
                                 <label>ملاحظات إضافية</label>
                                 <textarea id="checkoutNotes" placeholder="أي ملاحظات خاصة بالطلب" rows="2"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label style="display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;">
+                                    <input type="checkbox" id="checkoutEngraving"
+                                           style="width:18px;height:18px;accent-color:var(--gold,#c8a656);cursor:pointer;flex-shrink:0;"
+                                           onchange="Checkout._toggleEngraving()">
+                                    <span>✏️ أريد كتابة على الموس
+                                        <strong style="color:var(--gold,#c8a656);">&nbsp;(+2,000 DZD)</strong>
+                                    </span>
+                                </label>
+                                <div id="checkoutEngravingBox" style="display:none;margin-top:10px;">
+                                    <input type="text" id="checkoutEngravingText"
+                                           placeholder="ما تريد كتابته على الموس..."
+                                           maxlength="30"
+                                           oninput="Checkout._updateSummary()"
+                                           style="width:100%;padding:10px 14px;border-radius:9px;
+                                                  border:1px solid rgba(200,166,86,.4);
+                                                  background:var(--bg,#111);color:var(--text,#fff);
+                                                  font-family:inherit;font-size:.9rem;">
+                                    <div style="font-size:.72rem;color:var(--text-muted,#888);margin-top:5px;">
+                                        الحد الأقصى 30 حرفاً — التنفيذ يدوي بالنقش
+                                    </div>
+                                </div>
                             </div>
                             <div class="checkout-cod-note">
                                 <div class="checkout-cod-note-row"><i class="fas fa-money-bill-wave"></i><span><strong>الدفع عند الاستلام</strong> — لا حاجة لبطاقة بنكية</span></div>
@@ -427,5 +482,5 @@ window.Checkout = (() => {
         });
     }
 
-    return { init, open, close, _applyPromo: applyPromo };
+    return { init, open, close, _applyPromo: applyPromo, _toggleEngraving: toggleEngraving, _updateSummary: updateSummary };
 })();

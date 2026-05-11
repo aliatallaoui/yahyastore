@@ -1,9 +1,12 @@
 /* Inline order form on product detail page */
 window.IOF = (() => {
+    const ENGRAVING_COST = 2000;
+
     let _product          = null;
     let _qty              = 1;
     let _promo            = null;
     let _deliveryType     = 'home';
+    let _engravingEnabled = false;
     let _lastOrderNumber  = '';
     let _lastPhone        = '';
 
@@ -23,16 +26,30 @@ window.IOF = (() => {
         updateSummary();
     }
 
+    function setEngraving(enabled) {
+        _engravingEnabled = enabled;
+        const toggle = el('iof_eng_toggle');
+        const box    = el('iof_eng_box');
+        if (toggle) toggle.style.display = enabled ? 'none' : 'block';
+        if (box)    box.style.display    = enabled ? 'block' : 'none';
+        if (!enabled) { const t = el('iof_eng_text'); if (t) t.value = ''; }
+        updateSummary();
+    }
+
     function updateSummary() {
         if (!_product) return;
-        const wilayaEl = el('iof_wilaya');
-        const code     = wilayaEl ? parseInt(wilayaEl.value) : 0;
-        const shipping = code ? getShipping(code) : null;
-        const subtotal = _product.price * _qty;
-        const discount = _promo ? _promo.discount : 0;
+        const wilayaEl  = el('iof_wilaya');
+        const code      = wilayaEl ? parseInt(wilayaEl.value) : 0;
+        const shipping  = code ? getShipping(code) : null;
+        const subtotal  = _product.price * _qty;
+        const discount  = _promo ? _promo.discount : 0;
+        const engCost   = _engravingEnabled ? ENGRAVING_COST : 0;
 
         if (el('iof_qty_display')) el('iof_qty_display').textContent = _qty;
         if (el('iof_subtotal'))    el('iof_subtotal').textContent    = fmt(subtotal) + ' DZD';
+
+        const engRow = el('iof_eng_row');
+        if (engRow) engRow.style.display = _engravingEnabled ? 'flex' : 'none';
 
         // Discount row
         const discRow = el('iof_discount_row');
@@ -52,11 +69,11 @@ window.IOF = (() => {
 
         if (el('iof_total')) {
             if (shipping !== null) {
-                const total = Math.max(0, subtotal - discount) + shipping;
+                const total = Math.max(0, subtotal - discount) + engCost + shipping;
                 el('iof_total').textContent = fmt(total) + ' DZD';
                 el('iof_total').style.color = 'var(--gold, #c8a656)';
             } else {
-                el('iof_total').textContent = fmt(Math.max(0, subtotal - discount)) + ' DZD + الشحن';
+                el('iof_total').textContent = fmt(Math.max(0, subtotal - discount) + engCost) + ' DZD + الشحن';
                 el('iof_total').style.color = '';
             }
         }
@@ -175,6 +192,8 @@ window.IOF = (() => {
         }
 
         try {
+            const engravingText = _engravingEnabled ? (el('iof_eng_text')?.value.trim() || '') : '';
+
             const body = {
                 customer_name: name,
                 phone,
@@ -183,12 +202,20 @@ window.IOF = (() => {
                 delivery_type: _deliveryType,
                 shipping_price: shipping,
                 promo_code:    _promo ? _promo.code : null,
-                items: [{
-                    product_id:   _product.id,
-                    product_name: _product.name,
-                    unit_price:   _product.price,
-                    quantity:     _qty,
-                }],
+                items: [
+                    {
+                        product_id:   _product.id,
+                        product_name: _product.name,
+                        unit_price:   _product.price,
+                        quantity:     _qty,
+                    },
+                    ...(_engravingEnabled ? [{
+                        product_id:   null,
+                        product_name: 'كتابة على الموس' + (engravingText ? ': ' + engravingText : ''),
+                        unit_price:   ENGRAVING_COST,
+                        quantity:     1,
+                    }] : []),
+                ],
             };
 
             const res  = await fetch(CONFIG.apiUrl + '/orders', {
@@ -202,7 +229,8 @@ window.IOF = (() => {
             const orderNumber = data.data?.order_number || '';
             const subtotal    = _product.price * _qty;
             const discount    = _promo ? _promo.discount : 0;
-            const total       = Math.max(0, subtotal - discount) + shipping;
+            const engCost     = _engravingEnabled ? ENGRAVING_COST : 0;
+            const total       = Math.max(0, subtotal - discount) + engCost + shipping;
 
             if (window.FBQ) FBQ('Purchase', {
                 value:        total,
@@ -340,13 +368,14 @@ ${upsellHTML}`;
     }
 
     function init(product) {
-        _product      = product;
-        _qty          = 1;
-        _promo        = null;
-        _deliveryType = 'home';
+        _product          = product;
+        _qty              = 1;
+        _promo            = null;
+        _deliveryType     = 'home';
+        _engravingEnabled = false;
         clearMsg();
         updateSummary();
     }
 
-    return { init, plus: () => setQty(_qty + 1), minus: () => setQty(_qty - 1), updateSummary, applyPromo, submit, setDeliveryType };
+    return { init, plus: () => setQty(_qty + 1), minus: () => setQty(_qty - 1), updateSummary, applyPromo, submit, setDeliveryType, setEngraving };
 })();
