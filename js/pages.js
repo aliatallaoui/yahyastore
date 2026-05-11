@@ -257,6 +257,7 @@ ${trustBarHTML()}
                 <div class="review-video-card">
                     <div class="review-video-wrap" data-src="${esc(v.src)}" onclick="RVP.play(this)">
                         <div class="review-video-thumb">
+                            <video src="${esc(v.src)}" preload="metadata" muted playsinline></video>
                             <div class="vpo-btn"><i class="fas fa-play"></i></div>
                         </div>
                     </div>
@@ -965,8 +966,10 @@ ${(() => {
             ${vids.map(v => `
             <div class="review-video-wrap" data-src="${esc(v.src)}" onclick="RVP.play(this)"
                  style="border-radius:12px;overflow:hidden;background:#111;aspect-ratio:9/16;position:relative;cursor:pointer;">
-                <div class="review-video-thumb" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
-                    <div class="vpo-btn"><i class="fas fa-play"></i></div>
+                <div class="review-video-thumb" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+                    <video src="${esc(v.src)}" preload="metadata" muted playsinline
+                           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;display:block;"></video>
+                    <div class="vpo-btn" style="position:relative;z-index:2;"><i class="fas fa-play"></i></div>
                 </div>
             </div>`).join('')}
         </div>
@@ -1001,6 +1004,7 @@ ${trustBarHTML()}
             <div class="review-video-card" style="animation-delay:${i * 0.05}s">
                 <div class="review-video-wrap" data-src="${esc(v.src)}" onclick="RVP.play(this)">
                     <div class="review-video-thumb">
+                        <video src="${esc(v.src)}" preload="metadata" muted playsinline></video>
                         <div class="vpo-btn"><i class="fas fa-play"></i></div>
                     </div>
                 </div>
@@ -1064,11 +1068,14 @@ window.RVP = {
         if (!src) return;
         // Pause all other playing review videos
         document.querySelectorAll('video.review-video').forEach(v => { v.pause(); });
+        // Stop the thumbnail preload video to free up the connection
+        wrap.querySelectorAll('video').forEach(v => { v.src = ''; });
         const video = document.createElement('video');
         video.controls = true;
         video.playsinline = true;
         video.autoplay = true;
         video.className = 'review-video';
+        video.style.cssText = 'width:100%;display:block;aspect-ratio:9/16;object-fit:cover;background:#000;';
         video.innerHTML = `<source src="${src}" type="video/mp4">`;
         wrap.replaceWith(video);
         video.play().catch(() => {});
