@@ -27,6 +27,7 @@ window.IOF = (() => {
     }
 
     function setEngraving(enabled) {
+        if (!_product?.engravable) return;
         _engravingEnabled = enabled;
         const toggle = el('iof_eng_toggle');
         const box    = el('iof_eng_box');

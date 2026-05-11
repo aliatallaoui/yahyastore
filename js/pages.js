@@ -848,7 +848,8 @@ ${trustBarHTML()}
                         </button>
                     </div>
 
-                    <!-- ── Engraving option ───────────────────────── -->
+                    <!-- ── Engraving option (only for engravable products) ── -->
+                    ${product.engravable ? `
                     <div id="iof_eng_toggle" style="margin-top:8px;">
                         <button type="button" onclick="IOF.setEngraving(true)"
                                 style="width:100%;padding:10px 14px;border-radius:9px;
@@ -879,7 +880,7 @@ ${trustBarHTML()}
                                 الحد الأقصى 30 حرفاً — التنفيذ يدوي بالنقش
                             </div>
                         </div>
-                    </div>
+                    </div>` : ''}
 
                     <div class="iof-qty-row">
                         <span style="font-size:.9rem;color:var(--text-muted,#888);">الكمية:</span>
@@ -898,10 +899,11 @@ ${trustBarHTML()}
                             <span id="iof_promo_label">خصم</span>
                             <span id="iof_discount_val">—</span>
                         </div>
+                        ${product.engravable ? `
                         <div class="iof-summary-row" id="iof_eng_row" style="display:none;color:var(--gold,#c8a656);">
                             <span>✏️ كتابة على الموس</span>
                             <span>2,000 DZD</span>
-                        </div>
+                        </div>` : ''}
                         <div class="iof-summary-row">
                             <span>سعر الشحن</span>
                             <span id="iof_shipping">—</span>
