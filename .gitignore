@@ -7,6 +7,11 @@ prod.env
 test.php
 download-products.js
 
+# Backend files (belong in yahyablade-api repo, not here)
+*.php
+*.blade.php
+*.conf
+
 # Large media (deploy via SCP, not git)
 videos/
 

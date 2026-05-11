@@ -18,7 +18,7 @@ class CartManager {
             content_name: name,
             content_type: 'product',
             value: price * qty,
-            currency: 'USD',
+            currency: 'DZD',
         });
         if (window.Analytics) Analytics.track('add_to_cart', {
             product_id:   String(id),
@@ -59,6 +59,29 @@ class CartManager {
     _save() {
         localStorage.setItem(this.key, JSON.stringify(this.items));
         this._notify();
+        this._syncDebounced();
+    }
+
+    _syncDebounced() {
+        clearTimeout(this._syncTimer);
+        this._syncTimer = setTimeout(() => this._syncToApi(), 4000);
+    }
+
+    _syncToApi() {
+        const apiUrl = window.CONFIG?.apiUrl;
+        if (!apiUrl || this.isEmpty) return;
+        const phone = localStorage.getItem('yhy_phone') || null;
+        fetch(apiUrl + '/carts/save', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+                session_id: sessionStorage.getItem('yhy_sid') || null,
+                phone,
+                items: this.toApiItems(),
+                total: this.subtotal,
+            }),
+            keepalive: true,
+        }).catch(() => {});
     }
 }
 

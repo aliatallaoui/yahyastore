@@ -262,6 +262,7 @@ window.IOF = (() => {
     function _showSuccess(formEl, orderNumber, phone) {
         _lastOrderNumber = orderNumber;
         _lastPhone       = phone;
+        if (phone) localStorage.setItem('yhy_phone', phone);
 
         const upsell    = window.BRAND?.upsell;
         const isUpsell  = upsell && Number(upsell.id) !== Number(_product?.id);

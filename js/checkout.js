@@ -474,7 +474,10 @@ window.Checkout = (() => {
         // Update abandoned cart record when phone is entered
         el('checkoutPhone')?.addEventListener('change', function() {
             const phone = this.value.trim();
-            if (/^(05|06|07)\d{8}$/.test(phone)) saveCart(phone);
+            if (/^(05|06|07)\d{8}$/.test(phone)) {
+                localStorage.setItem('yhy_phone', phone);
+                saveCart(phone);
+            }
         });
 
         document.addEventListener('keydown', e => {
