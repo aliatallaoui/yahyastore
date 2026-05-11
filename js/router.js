@@ -26,12 +26,13 @@ window.Router = (() => {
 
         if (_current !== page) {
             _current = page;
+            document.getElementById('_pld')?.remove();
             main.innerHTML = Pages[page]();
             UI.reinit();
             Products.init('productsGrid', page === 'products');
             document.title = PAGE_TITLES[page] || PAGE_TITLES.home;
             setActiveNav(page);
-
+            if (page === 'track' && window.TrackPage) TrackPage.init();
         }
 
         if (window.FBQ) FBQ('PageView');
@@ -45,6 +46,32 @@ window.Router = (() => {
         } else {
             window.scrollTo(0, 0);
         }
+    }
+
+    function injectProductLd(product) {
+        document.getElementById('_pld')?.remove();
+        const ld = {
+            '@context': 'https://schema.org',
+            '@type': 'Product',
+            name: product.name,
+            description: product.short_description || product.description || '',
+            image: product.images?.length ? product.images : (product.image ? [product.image] : []),
+            brand: { '@type': 'Brand', name: 'ورشة يحيى' },
+            offers: {
+                '@type': 'Offer',
+                price: product.price,
+                priceCurrency: 'DZD',
+                availability: product.in_stock === false
+                    ? 'https://schema.org/OutOfStock'
+                    : 'https://schema.org/InStock',
+                seller: { '@type': 'Organization', name: 'ورشة يحيى' },
+            },
+        };
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.id   = '_pld';
+        s.textContent = JSON.stringify(ld);
+        document.head.appendChild(s);
     }
 
     async function renderProductPage(id) {
@@ -65,6 +92,7 @@ window.Router = (() => {
             main.innerHTML = Pages.productDetail(product);
             UI.reinit();
             if (window.IOF) IOF.init(product);
+            injectProductLd(product);
             document.title = `${product.name} | ورشة يحيى`;
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
             if (window.FBQ) FBQ('ViewContent', {

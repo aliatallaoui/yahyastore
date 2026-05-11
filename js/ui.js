@@ -572,6 +572,65 @@ window.UI = (() => {
         });
     }
 
+    // ── Social proof ticker ───────────────────────────────────────────────────
+    function initSocialProof() {
+        const names   = ['محمد','أحمد','يوسف','علي','عمر','عبد الرحمن','كريم','ناصر','مراد','بلال','وليد','رضا','فيصل','رياض','إسلام','أمين','زكريا','حسام','أنس','طارق'];
+        const cities  = ['الجزائر','وهران','قسنطينة','عنابة','سطيف','باتنة','بسكرة','تيزي وزو','تلمسان','بجاية','المسيلة','سيدي بلعباس','الجلفة','مستغانم','ورقلة','برج بوعريريج','غليزان','المدية','الشلف','معسكر'];
+        const deltas  = [2, 3, 5, 7, 9, 12, 15, 18, 22, 28, 35];
+
+        let el = null;
+
+        function inject() {
+            if (el) return;
+            el = document.createElement('div');
+            el.id = 'sp-tick';
+            el.style.cssText = [
+                'position:fixed;bottom:88px;left:20px;z-index:9990;',
+                'background:rgba(20,18,14,.96);border:1px solid rgba(200,166,86,.35);',
+                'border-radius:14px;padding:12px 16px;max-width:270px;',
+                'display:flex;align-items:flex-start;gap:10px;',
+                'box-shadow:0 8px 32px rgba(0,0,0,.55);backdrop-filter:blur(8px);',
+                'transform:translateY(120%);opacity:0;',
+                'transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .35s;',
+                'cursor:pointer;font-family:Cairo,Tajawal,sans-serif;direction:rtl;text-align:right;',
+            ].join('');
+            el.innerHTML = `
+                <span style="font-size:1.3rem;flex-shrink:0;margin-top:1px;">🛍️</span>
+                <div>
+                    <div id="sp-msg" style="font-size:.83rem;font-weight:700;color:#e8e0d0;line-height:1.5;"></div>
+                    <div style="font-size:.72rem;color:#c8a656;margin-top:3px;font-weight:600;">الدفع عند الاستلام ✓</div>
+                </div>
+            `;
+            el.addEventListener('click', hide);
+            document.body.appendChild(el);
+        }
+
+        function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+        function show() {
+            inject();
+            const products = window.Products?.getAll?.() || [];
+            const prod     = products.length ? pick(products).name : 'موس بوسعادي';
+            const mins     = pick(deltas);
+            const timeStr  = mins < 60 ? `منذ ${mins} دقيقة` : `منذ ساعة`;
+            document.getElementById('sp-msg').textContent =
+                `${pick(names)} من ${pick(cities)} اشترى ${prod} ${timeStr}`;
+            el.style.transform = 'translateY(0)';
+            el.style.opacity   = '1';
+            setTimeout(hide, 5000);
+        }
+
+        function hide() {
+            if (!el) return;
+            el.style.transform = 'translateY(120%)';
+            el.style.opacity   = '0';
+        }
+
+        // First show after 15s, then every 40–60s
+        setTimeout(show, 15000);
+        setInterval(show, 45000 + Math.random() * 15000);
+    }
+
     function init() {
         injectSharedDOM();
         initMobileMenu();
@@ -581,6 +640,7 @@ window.UI = (() => {
         initNewsletter();
         initAnnouncementBar();
         initSearch();
+        initSocialProof();
     }
 
     return { init, reinit, toast };

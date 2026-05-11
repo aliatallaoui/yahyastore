@@ -64,7 +64,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!btn) return;
         const qtyEl = document.getElementById('qtyValue');
         const qty   = qtyEl ? (parseInt(qtyEl.textContent) || 1) : 1;
-        Cart.add(btn.dataset.id, btn.dataset.name, parseInt(btn.dataset.price), qty);
+        const itemId    = btn.dataset.id;
+        const itemName  = btn.dataset.name;
+        const itemPrice = parseInt(btn.dataset.price);
+        Cart.add(itemId, itemName, itemPrice, qty);
+        if (window.FBQ) FBQ('AddToCart', {
+            content_ids:  [String(itemId)],
+            content_name: itemName,
+            content_type: 'product',
+            value:        itemPrice,
+            currency:     'DZD',
+        });
         openCart();
         const origHTML  = btn.innerHTML;
         const addedCopy = window.BRAND?.copy?.added || 'تمت الإضافة ✓';
@@ -142,4 +152,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ── Start router (renders first page + calls Products.init per route) ─────
     Router.init();
+
+    // ── Admin shortcut button (only when admin cookie is set) ─────────────────
+    if (document.cookie.split('; ').some(c => c === 'yh_admin=1')) {
+        const ab = document.createElement('a');
+        ab.href = '/admin';
+        ab.id   = 'adminShortcut';
+        ab.setAttribute('title', 'لوحة التحكم');
+        ab.innerHTML = '<i class="fas fa-shield-alt"></i><span> لوحة التحكم</span>';
+        ab.style.cssText =
+            'position:fixed;bottom:24px;left:24px;z-index:9998;' +
+            'background:rgba(15,15,10,.92);border:1px solid rgba(212,175,55,.45);' +
+            'border-radius:10px;padding:9px 14px;display:flex;align-items:center;gap:8px;' +
+            'color:#d4af37;text-decoration:none;font-size:.8rem;font-weight:700;' +
+            'font-family:Cairo,sans-serif;box-shadow:0 4px 24px rgba(0,0,0,.55);' +
+            'transition:border-color .2s,background .2s;backdrop-filter:blur(6px);';
+        ab.addEventListener('mouseenter', () => {
+            ab.style.borderColor = 'rgba(212,175,55,.9)';
+            ab.style.background  = 'rgba(26,26,16,.98)';
+        });
+        ab.addEventListener('mouseleave', () => {
+            ab.style.borderColor = 'rgba(212,175,55,.45)';
+            ab.style.background  = 'rgba(15,15,10,.92)';
+        });
+        document.body.appendChild(ab);
+    }
 });
