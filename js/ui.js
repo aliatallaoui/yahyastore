@@ -574,59 +574,70 @@ window.UI = (() => {
 
     // ── Social proof ticker ───────────────────────────────────────────────────
     function initSocialProof() {
-        const names   = ['محمد','أحمد','يوسف','علي','عمر','عبد الرحمن','كريم','ناصر','مراد','بلال','وليد','رضا','فيصل','رياض','إسلام','أمين','زكريا','حسام','أنس','طارق'];
-        const cities  = ['الجزائر','وهران','قسنطينة','عنابة','سطيف','باتنة','بسكرة','تيزي وزو','تلمسان','بجاية','المسيلة','سيدي بلعباس','الجلفة','مستغانم','ورقلة','برج بوعريريج','غليزان','المدية','الشلف','معسكر'];
-        const deltas  = [2, 3, 5, 7, 9, 12, 15, 18, 22, 28, 35];
+        let _pool = [];
+        let _idx  = 0;
+        let _el   = null;
 
-        let el = null;
+        // Load real orders from API
+        fetch(CONFIG.apiUrl + '/orders/recent')
+            .then(r => r.json())
+            .then(data => { if (Array.isArray(data) && data.length) { _pool = data; _idx = Math.floor(Math.random() * data.length); } })
+            .catch(() => {});
+
+        function fmtTime(minutes) {
+            if (minutes < 2)    return 'للتو';
+            if (minutes < 60)   return `منذ ${minutes} دقيقة`;
+            const h = Math.floor(minutes / 60);
+            if (h < 24)         return `منذ ${h} ${h === 1 ? 'ساعة' : 'ساعات'}`;
+            const d = Math.floor(h / 24);
+            return `منذ ${d} ${d === 1 ? 'يوم' : 'أيام'}`;
+        }
 
         function inject() {
-            if (el) return;
-            el = document.createElement('div');
-            el.id = 'sp-tick';
-            el.style.cssText = [
+            if (_el) return;
+            _el = document.createElement('div');
+            _el.id = 'sp-tick';
+            _el.style.cssText = [
                 'position:fixed;bottom:88px;left:20px;z-index:9990;',
                 'background:rgba(20,18,14,.96);border:1px solid rgba(200,166,86,.35);',
-                'border-radius:14px;padding:12px 16px;max-width:270px;',
+                'border-radius:14px;padding:12px 16px;max-width:280px;',
                 'display:flex;align-items:flex-start;gap:10px;',
                 'box-shadow:0 8px 32px rgba(0,0,0,.55);backdrop-filter:blur(8px);',
                 'transform:translateY(120%);opacity:0;',
                 'transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .35s;',
                 'cursor:pointer;font-family:Cairo,Tajawal,sans-serif;direction:rtl;text-align:right;',
             ].join('');
-            el.innerHTML = `
+            _el.innerHTML = `
                 <span style="font-size:1.3rem;flex-shrink:0;margin-top:1px;">🛍️</span>
                 <div>
                     <div id="sp-msg" style="font-size:.83rem;font-weight:700;color:#e8e0d0;line-height:1.5;"></div>
                     <div style="font-size:.72rem;color:#c8a656;margin-top:3px;font-weight:600;">الدفع عند الاستلام ✓</div>
                 </div>
             `;
-            el.addEventListener('click', hide);
-            document.body.appendChild(el);
+            _el.addEventListener('click', hide);
+            document.body.appendChild(_el);
         }
 
-        function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
         function show() {
+            if (!_pool.length) return; // wait for data to load
             inject();
-            const products = window.Products?.getAll?.() || [];
-            const prod     = products.length ? pick(products).name : 'موس بوسعادي';
-            const mins     = pick(deltas);
-            const timeStr  = mins < 60 ? `منذ ${mins} دقيقة` : `منذ ساعة`;
-            document.getElementById('sp-msg').textContent =
-                `${pick(names)} من ${pick(cities)} اشترى ${prod} ${timeStr}`;
-            el.style.transform = 'translateY(0)';
-            el.style.opacity   = '1';
-            setTimeout(hide, 5000);
+            const order = _pool[_idx % _pool.length];
+            _idx++;
+            const msgEl = document.getElementById('sp-msg');
+            if (msgEl) msgEl.textContent =
+                `${order.name} من ${order.wilaya} اشترى ${order.product} ${fmtTime(order.minutes)}`;
+            _el.style.transform = 'translateY(0)';
+            _el.style.opacity   = '1';
+            setTimeout(hide, 5500);
         }
 
         function hide() {
-            if (!el) return;
-            el.style.transform = 'translateY(120%)';
-            el.style.opacity   = '0';
+            if (!_el) return;
+            _el.style.transform = 'translateY(120%)';
+            _el.style.opacity   = '0';
         }
 
-        // First show after 15s, then every 40–60s
+        // First attempt after 15s (data should be loaded by then), then every ~45s
         setTimeout(show, 15000);
         setInterval(show, 45000 + Math.random() * 15000);
     }
