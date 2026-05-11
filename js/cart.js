@@ -8,10 +8,10 @@ class CartManager {
     onChange(fn) { this._listeners.push(fn); }
     _notify()    { this._listeners.forEach(fn => fn()); }
 
-    add(id, name, price, qty = 1) {
+    add(id, name, price, qty = 1, engravable = false) {
         const existing = this.items.find(i => i.id === id);
-        if (existing) existing.qty += qty;
-        else this.items.push({ id, name, price, qty });
+        if (existing) { existing.qty += qty; }
+        else this.items.push({ id, name, price, qty, engravable: !!engravable });
         this._save();
         if (window.FBQ) FBQ('AddToCart', {
             content_ids: [String(id)],
@@ -43,9 +43,10 @@ class CartManager {
         this._save();
     }
 
-    get subtotal() { return this.items.reduce((s, i) => s + i.price * i.qty, 0); }
-    get count()    { return this.items.reduce((s, i) => s + i.qty, 0); }
-    get isEmpty()  { return this.items.length === 0; }
+    get subtotal()      { return this.items.reduce((s, i) => s + i.price * i.qty, 0); }
+    get count()         { return this.items.reduce((s, i) => s + i.qty, 0); }
+    get isEmpty()       { return this.items.length === 0; }
+    get hasEngravable() { return this.items.some(i => i.engravable); }
 
     toApiItems() {
         return this.items.map(i => ({

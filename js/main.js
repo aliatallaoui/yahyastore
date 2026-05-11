@@ -64,10 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!btn) return;
         const qtyEl = document.getElementById('qtyValue');
         const qty   = qtyEl ? (parseInt(qtyEl.textContent) || 1) : 1;
-        const itemId    = btn.dataset.id;
-        const itemName  = btn.dataset.name;
-        const itemPrice = parseInt(btn.dataset.price);
-        Cart.add(itemId, itemName, itemPrice, qty);
+        const itemId        = btn.dataset.id;
+        const itemName      = btn.dataset.name;
+        const itemPrice     = parseInt(btn.dataset.price);
+        const itemEngravable = btn.dataset.engravable === 'true';
+        Cart.add(itemId, itemName, itemPrice, qty, itemEngravable);
         if (window.FBQ) FBQ('AddToCart', {
             content_ids:  [String(itemId)],
             content_name: itemName,

@@ -126,6 +126,15 @@ window.Checkout = (() => {
         el('checkoutOverlay')?.classList.add('active');
         el('checkoutModal')?.classList.add('active');
         document.body.style.overflow = 'hidden';
+        // Show engraving section only when cart has an engravable product
+        const engSection = el('checkoutEngraving')?.closest('.form-group');
+        if (engSection) engSection.style.display = _cart.hasEngravable ? '' : 'none';
+        if (!_cart.hasEngravable) {
+            const cb = el('checkoutEngraving');
+            if (cb) cb.checked = false;
+            const box = el('checkoutEngravingBox');
+            if (box) box.style.display = 'none';
+        }
         updateSummary();
         if (window.FBQ) FBQ('InitiateCheckout', {
             value: _cart.subtotal,

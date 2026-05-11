@@ -763,7 +763,7 @@ ${trustBarHTML()}
                         ${p.in_stock === false
                             ? `<span style="font-size:.78rem;font-weight:700;color:#e74c3c;"><i class="fas fa-times-circle"></i> نفد</span>`
                             : `<button class="btn btn-primary btn-sm btn-ripple add-to-cart"
-                                       data-id="${p.id}" data-name="${esc(p.name)}" data-price="${p.price}">أضف للسلة</button>`}
+                                       data-id="${p.id}" data-name="${esc(p.name)}" data-price="${p.price}" data-engravable="${p.engravable ? 'true' : ''}">أضف للسلة</button>`}
                     </div>
                 </div>
             </div>`;

@@ -94,7 +94,7 @@ window.Products = (() => {
         <img src="${p.image || ''}" alt="${esc(p.name)}" loading="lazy">
         <div class="product-frame"></div>
         <div class="product-quick-actions">
-            <button class="quick-add add-to-cart" data-id="${p.id}" data-name="${esc(p.name)}" data-price="${p.price}" title="${addToCartCopy}">
+            <button class="quick-add add-to-cart" data-id="${p.id}" data-name="${esc(p.name)}" data-price="${p.price}" data-engravable="${p.engravable ? 'true' : ''}" title="${addToCartCopy}">
                 <i class="fas fa-cart-plus"></i>
             </button>
             <button class="quick-whatsapp" data-name="${esc(p.name)}" data-price="${p.price}" title="اطلب عبر واتساب">
@@ -115,7 +115,7 @@ window.Products = (() => {
                 <span class="product-price">${Number(p.price).toLocaleString('en-US')} DZD</span>
                 ${oldPriceHtml}
             </div>
-            <button class="btn btn-primary btn-ripple add-to-cart" data-id="${p.id}" data-name="${esc(p.name)}" data-price="${p.price}">${addToCartCopy}</button>
+            <button class="btn btn-primary btn-ripple add-to-cart" data-id="${p.id}" data-name="${esc(p.name)}" data-price="${p.price}" data-engravable="${p.engravable ? 'true' : ''}">${addToCartCopy}</button>
         </div>
     </div>
 </div>`;
@@ -142,7 +142,7 @@ window.Products = (() => {
                 <span class="product-price">${Number(p.price).toLocaleString('en-US')} DZD</span>
                 ${oldPriceHtml}
             </div>
-            <button class="btn btn-primary btn-ripple add-to-cart" data-id="${p.id}" data-name="${esc(p.name)}" data-price="${p.price}">${addToCartCopy}</button>
+            <button class="btn btn-primary btn-ripple add-to-cart" data-id="${p.id}" data-name="${esc(p.name)}" data-price="${p.price}" data-engravable="${p.engravable ? 'true' : ''}">${addToCartCopy}</button>
         </div>
     </div>
 </div>`;
@@ -335,9 +335,10 @@ window.Products = (() => {
             const oldEl = document.getElementById('pmOldPrice');
             oldEl.textContent = d.oldPrice ? Number(d.oldPrice).toLocaleString('en-US') + ' DZD' : '';
             const cartBtn = document.getElementById('pmCart');
-            cartBtn.dataset.id    = d.id;
-            cartBtn.dataset.name  = d.name;
-            cartBtn.dataset.price = d.price;
+            cartBtn.dataset.id         = d.id;
+            cartBtn.dataset.name       = d.name;
+            cartBtn.dataset.price      = d.price;
+            cartBtn.dataset.engravable = d.engravable ? 'true' : '';
             document.getElementById('pmWa').dataset.name  = d.name;
             document.getElementById('pmWa').dataset.price = d.price;
             const detailLink = document.getElementById('pmDetail');
