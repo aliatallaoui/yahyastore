@@ -236,17 +236,18 @@ window.Checkout = (() => {
             : baseNotes || null;
 
         const payload = {
-            customer_name: el('checkoutName').value.trim(),
-            phone:         el('checkoutPhone').value.trim(),
-            second_phone:  el('checkoutSecondPhone')?.value.trim() || null,
-            wilaya:        wilaya?.name || wilayaCode,
-            wilaya_code:   String(wilayaCode),
-            commune:       el('checkoutCommune')?.value.trim()     || null,
-            address:       el('checkoutAddress').value.trim(),
-            delivery_type: el('checkoutDeliveryType')?.value       || null,
-            notes:         notesWithEng,
+            customer_name:  el('checkoutName').value.trim(),
+            phone:          el('checkoutPhone').value.trim(),
+            second_phone:   el('checkoutSecondPhone')?.value.trim() || null,
+            wilaya:         wilaya?.name || wilayaCode,
+            wilaya_code:    String(wilayaCode),
+            commune:        el('checkoutCommune')?.value.trim()     || null,
+            address:        el('checkoutAddress').value.trim(),
+            delivery_type:  el('checkoutDeliveryType')?.value       || null,
+            notes:          notesWithEng,
             shipping_price: totals.shipping,
-            promo_code:    _promo ? _promo.code : null,
+            promo_code:     _promo ? _promo.code : null,
+            engraving_name: (engravingEnabled && engravingText) ? engravingText : null,
             items: [
                 ..._cart.toApiItems(),
                 ...(engravingEnabled ? [{
