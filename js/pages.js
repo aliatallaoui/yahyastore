@@ -911,6 +911,34 @@ ${trustBarHTML()}
 
 ${relatedSection}
 
+${(() => {
+    const vids = (BRAND.reviewVideos || []).slice(0, 3);
+    if (!vids.length) return '';
+    return `
+<section class="section" style="padding-top:0;padding-bottom:40px;">
+    <div class="container">
+        <h2 class="section-title" style="margin-bottom:20px;font-size:1.2rem;">
+            <i class="fas fa-play-circle" style="color:var(--primary);"></i>
+            شاهد آراء زبائننا
+        </h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+            ${vids.map(v => `
+            <div class="review-video-wrap" data-src="${esc(v.src)}" onclick="RVP.play(this)"
+                 style="border-radius:12px;overflow:hidden;background:#111;aspect-ratio:9/16;position:relative;cursor:pointer;">
+                <div class="review-video-thumb" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+                    <div class="vpo-btn"><i class="fas fa-play"></i></div>
+                </div>
+            </div>`).join('')}
+        </div>
+        <div style="text-align:center;margin-top:16px;">
+            <a href="#reviews" class="btn btn-outline btn-sm btn-ripple">
+                <i class="fas fa-video"></i> شاهد المزيد من آراء الزبائن
+            </a>
+        </div>
+    </div>
+</section>`;
+})()}
+
 `;
     }
 
@@ -960,18 +988,22 @@ ${trustBarHTML()}
         <div style="text-align:center;margin-bottom:32px;">
             <div style="font-size:2.4rem;margin-bottom:10px;">📦</div>
             <h1 style="font-size:1.6rem;margin-bottom:8px;">تتبع طلبك</h1>
-            <p style="color:var(--text-muted,#888);font-size:.95rem;">أدخل رقم هاتفك لعرض جميع طلباتك وحالتها</p>
+            <p style="color:var(--text-muted,#888);font-size:.95rem;">أدخل رقم الطلب ورقم الهاتف لعرض حالة طلبك</p>
         </div>
 
         <div class="card" style="padding:28px 24px;margin-bottom:24px;">
-            <div style="display:flex;gap:10px;">
-                <input type="tel" id="trackPhone" placeholder="05xxxxxxxx"
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                <input type="text" id="trackOrderNum" placeholder="رقم الطلب — مثال: YHY-XXXXXX"
+                       maxlength="20" autocomplete="off" spellcheck="false"
+                       style="direction:ltr;text-align:center;font-family:monospace;font-size:1rem;letter-spacing:.06em;padding:12px 16px;border-radius:var(--radius,10px);border:1px solid var(--border,#333);background:var(--bg-card,#1a1a14);color:var(--text,#fff);width:100%;"
+                       onkeydown="if(event.key==='Enter') TrackPage.search()">
+                <input type="tel" id="trackPhone" placeholder="رقم الهاتف — 05xxxxxxxx"
                        inputmode="numeric" maxlength="10"
-                       style="flex:1;direction:ltr;text-align:center;font-size:1.1rem;letter-spacing:.08em;padding:12px 16px;border-radius:var(--radius,10px);border:1px solid var(--border,#333);background:var(--bg-card,#1a1a14);color:var(--text,#fff);"
+                       style="direction:ltr;text-align:center;font-size:1rem;letter-spacing:.08em;padding:12px 16px;border-radius:var(--radius,10px);border:1px solid var(--border,#333);background:var(--bg-card,#1a1a14);color:var(--text,#fff);width:100%;"
                        onkeydown="if(event.key==='Enter') TrackPage.search()">
                 <button onclick="TrackPage.search()"
-                        style="padding:12px 22px;border-radius:var(--radius,10px);background:var(--gold,#c8a656);color:#111;border:none;font-weight:700;font-size:.95rem;cursor:pointer;white-space:nowrap;">
-                    <i class="fas fa-search"></i> بحث
+                        style="padding:12px 22px;border-radius:var(--radius,10px);background:var(--gold,#c8a656);color:#111;border:none;font-weight:700;font-size:.95rem;cursor:pointer;">
+                    <i class="fas fa-search"></i> تتبع الطلب
                 </button>
             </div>
             <div id="trackError" style="display:none;color:#e05;font-size:.85rem;margin-top:10px;text-align:center;"></div>
